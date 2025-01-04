@@ -1,15 +1,26 @@
 {
-  "name": "E-Tickets-Backend",
+  "name": "elitest",
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@elysiajs/cors": "^1.2.0",
+    "@elysiajs/swagger": "^1.2.0",
+    "@prisma/client": "6.1.0",
+    "arctic": "^3.0.0",
+    "elysia": "latest",
+    "elysia-helmet": "^2.0.0",
+    "logestic": "^1.2.4",
+    "oslo": "^1.2.1"
+  },
+  "prisma": {
+    "seed": "bun prisma/seeds/index.ts"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "prisma": "^6.1.0"
   },
   "module": "src/index.js"
 }

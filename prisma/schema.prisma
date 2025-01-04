@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int            @id @default(autoincrement()) @db.SmallInt
+  first_name       String         @db.VarChar(255)
+  last_name        String         @db.VarChar(255)
+  email            String         @unique @db.VarChar(255)
+  username         String         @unique @db.VarChar(255)
+  password_salt    String         @db.VarChar(255)
+  password         String         @db.VarChar(255)
+  birth_date       DateTime       @db.Date
+  phone_number     String         @db.VarChar(100)
+  address          String         @db.Text
+  document_id      String         @unique @db.VarChar(40)
+  document_type_id Int            @db.SmallInt
+  status_id        Int            @default(1) @db.SmallInt
+  created_at       DateTime       @default(now()) @db.Date
+  updated_at       DateTime       @updatedAt @db.Date
+  Document_Type    Document_Type  @relation(fields: [document_type_id], references: [id])
+  Status           User_Status    @relation(fields: [status_id], references: [id])
+  Bookings         Booking[]
+  Feedback         Feedback[]
+  User_Otps        User_Otps[]
+  Session          User_Session[]
+}
+
+model Barber {
+  id               Int              @id @default(autoincrement()) @db.SmallInt
+  first_name       String           @db.VarChar(255)
+  last_name        String           @db.VarChar(255)
+  email            String           @unique @db.VarChar(255)
+  address          String           @db.Text
+  document_id      String           @unique @db.VarChar(40)
+  document_type_id Int              @db.SmallInt
+  status_id        Int              @db.SmallInt
+  created_at       DateTime         @default(now()) @db.Date
+  updated_at       DateTime         @updatedAt @db.Date
+  Document_Type    Document_Type    @relation(fields: [document_type_id], references: [id])
+  Status           User_Status      @relation(fields: [status_id], references: [id])
+  Bookings         Booking[]
+  Schedule         Schedule[]
+  Feedback         Feedback[]
+  Expertise        Expertise[]
+  Barber_Session   Barber_Session[]
+  Barber_Otps      Barber_Otps[]
+}
+
+model User_Status {
+  id         Int      @id @default(autoincrement()) @db.SmallInt
+  name       String   @db.VarChar(60)
+  created_at DateTime @default(now()) @db.Date
+  updated_at DateTime @updatedAt @db.Date
+  User       User[]
+  Barber     Barber[]
+}
+
+model User_Session {
+  id         String   @id @default(uuid()) @db.VarChar(255)
+  user_id    Int      @db.SmallInt
+  expires_at Int      @db.Integer
+  User       User     @relation(fields: [user_id], references: [id])
+  created_at DateTime @default(now()) @db.Date
+}
+
+model Barber_Session {
+  id         String   @id @default(uuid()) @db.VarChar(255)
+  barber_id  Int      @db.SmallInt
+  expires_at Int      @db.Integer
+  Barber     Barber   @relation(fields: [barber_id], references: [id])
+  created_at DateTime @default(now()) @db.Date
+}
+
+model User_Otps {
+  id         String   @id @default(uuid()) @db.VarChar(255)
+  code       String   @db.VarChar(50)
+  user_id    Int      @db.SmallInt
+  created_at DateTime @default(now()) @db.Date
+  User       User     @relation(fields: [user_id], references: [id])
+}
+
+model Barber_Otps {
+  id         String   @id @default(uuid()) @db.VarChar(255)
+  code       String   @db.VarChar(50)
+  barber_id  Int      @db.SmallInt
+  created_at DateTime @default(now()) @db.Date
+  Barber     Barber   @relation(fields: [barber_id], references: [id])
+}
+
+model Document_Type {
+  id          Int      @id @default(autoincrement()) @db.SmallInt
+  name        String   @db.VarChar(30)
+  create_time DateTime @default(now()) @db.Date
+  update_time DateTime @updatedAt @db.Date
+  Users       User[]
+  Barber      Barber[]
+}
+
+model Service {
+  id          Int       @id @default(autoincrement()) @db.SmallInt
+  name        String    @db.VarChar(255)
+  description String?   @db.Text
+  price       Float     @db.DoublePrecision
+  created_at  DateTime  @default(now()) @db.Date
+  updated_at  DateTime  @updatedAt @db.Date
+  Bookings    Booking[]
+}
+
+model Schedule {
+  id           Int      @id @default(autoincrement()) @db.SmallInt
+  date         DateTime @db.Date
+  start_time   DateTime @db.Date
+  end_time     DateTime @db.Date
+  barber_id    Int      @db.SmallInt
+  is_available Boolean  @default(false) @db.Boolean
+  created_at   DateTime @default(now()) @db.Date
+  updated_at   DateTime @updatedAt @db.Date
+  Barber       Barber   @relation(fields: [barber_id], references: [id])
+}
+
+model Booking {
+  id         Int            @id @default(autoincrement()) @db.SmallInt
+  date       DateTime       @db.Date
+  start_time DateTime       @db.Time()
+  end_time   DateTime       @db.Time()
+  user_id    Int            @db.SmallInt
+  service_id Int            @db.SmallInt
+  barber_id  Int            @db.SmallInt
+  status_id  Int            @db.SmallInt
+  created_at DateTime       @default(now()) @db.Date
+  updated_at DateTime       @updatedAt @db.Date
+  Status     Booking_Status @relation(fields: [status_id], references: [id])
+  User       User           @relation(fields: [user_id], references: [id])
+  Barber     Barber         @relation(fields: [barber_id], references: [id])
+  Service    Service        @relation(fields: [service_id], references: [id])
+}
+
+model Booking_Status {
+  id         Int       @id @default(autoincrement()) @db.SmallInt
+  name       String    @db.VarChar(255)
+  created_at DateTime  @default(now()) @db.Date
+  updated_at DateTime  @updatedAt @db.Date
+  Booking    Booking[]
+}
+
+model Feedback {
+  id         Int      @id @default(autoincrement()) @db.SmallInt
+  comment    String?  @db.Text
+  rating     Int      @db.Integer
+  user_id    Int      @db.SmallInt
+  barber_id  Int      @db.SmallInt
+  User       User     @relation(fields: [user_id], references: [id])
+  Barber     Barber   @relation(fields: [barber_id], references: [id])
+  created_at DateTime @default(now()) @db.Date
+  updated_at DateTime @updatedAt @db.Date
+}
+
+model Expertise {
+  id         Int      @id @default(autoincrement()) @db.SmallInt
+  name       String   @db.VarChar(255)
+  barber_id  Int      @db.SmallInt
+  Barber     Barber   @relation(fields: [barber_id], references: [id])
+  created_at DateTime @default(now()) @db.Date
+  updated_at DateTime @updatedAt @db.Date
+}

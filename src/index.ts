@@ -1,7 +1,16 @@
+import { swagger } from "@elysiajs/swagger";
+import { helmet } from "elysia-helmet";
+import { routes } from "@/controllers";
 import { Elysia } from "elysia";
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+const helmetExec = helmet({
+  contentSecurityPolicy: false,
+  crossOriginResourcePolicy: { policy: "same-site" },
+});
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+new Elysia({ name: "Renter API", strictPath: true, precompile: true })
+  .use(swagger({ theme: "Dark", version: "0.1", exclude: ["/swagger", "/swagger/json"] }))
+  .get("ping", () => "pong")
+  .use(helmetExec)
+  .use(routes)
+  .listen(Bun.env.PORT ?? 8080, ({ url }) => console.log(`🦊 Elisya is Running on ${url}`));
