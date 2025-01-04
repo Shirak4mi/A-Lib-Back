@@ -1,4 +1,3 @@
-
 export type TMetaDataResponse = {
   data: Array<any>;
   metadata: {

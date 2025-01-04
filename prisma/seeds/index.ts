@@ -33,6 +33,16 @@ async function main() {
       skipDuplicates: true,
     });
 
+    // const test_user = await prisma.user.create({
+    //   data: {
+    //     first_name,
+    //     last_name,
+    //     address,
+    //     birth_date,
+    //     document_id,
+    //   },
+    // });
+
     console.log({ documet_types, user_status, booking_status });
   } catch (e) {
     console.error(e);

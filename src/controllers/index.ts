@@ -1,4 +1,6 @@
-import { Elysia } from "elysia";
-import Auth from "./Auth/index";
+import Auth from "./Auth/index.ts";
+import User from "./User/index.ts";
 
-export const routes = new Elysia({ prefix: "api" }).use(Auth);
+import { Elysia } from "elysia";
+
+export const routes = new Elysia({ prefix: "api" }).use(Auth).use(User);

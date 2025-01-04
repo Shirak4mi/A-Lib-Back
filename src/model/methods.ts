@@ -1,1 +1,1 @@
-export * from "./Auth/Methods/index.ts";
+export * from "./Auth/method/index.ts";
