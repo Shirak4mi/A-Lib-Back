@@ -15,3 +15,10 @@ export const createUserDTO = t.Object({
 });
 
 export type TCreateUserDTO = Static<typeof createUserDTO>;
+
+export const loginUserDTO = t.Object({
+  email: t.String({ minLength: 1, format: "email" }),
+  password: t.String({ minLength: 8 }),
+});
+
+export type TLoginUserDTO = Static<typeof loginUserDTO>;

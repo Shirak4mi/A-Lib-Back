@@ -1,12 +1,12 @@
-import { commonBDR, generateRandomSalt, generateToken, generateDate } from "@/utils/functions";
-import { BadRequestException, ConflictException, InternalServerErrorException } from "@/utils/error";
+import { ConflictException, InternalServerErrorException } from "@/utils/error";
+import { commonBDR, generateRandomSalt } from "@/utils/functions";
+import { createUserDTO } from "../dtos";
+import { Elysia } from "elysia";
 import { prisma } from "@/db";
 
-import type { TCreateUserDTO } from "../dtos";
-import type { TUR } from "@/types";
-
-export async function createSingleUser(body: TCreateUserDTO): Promise<TUR> {
-  try {
+export default new Elysia().post(
+  "/Register",
+  async ({ body, set }) => {
     const isNotUniqueUser = await prisma.user.findFirst({
       select: { id: true, email: true, document_id: true },
       where: {
@@ -46,13 +46,11 @@ export async function createSingleUser(body: TCreateUserDTO): Promise<TUR> {
     });
 
     if (!nUser) throw new InternalServerErrorException("Unknown!");
-
     //     const sentEmail = sendWelcomeMail(hashed_token, nUser.email);
     //     if (!sentEmail) throw new InternalServerErrorException("Couldn't send email");
 
+    set.headers["accept-encoding"] = "application/json";
     return nUser;
-  } catch (e) {
-    console.log("eploto el reg", e);
-    throw e;
-  }
-}
+  },
+  { body: createUserDTO }
+);

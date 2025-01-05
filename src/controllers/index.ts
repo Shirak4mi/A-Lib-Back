@@ -1,5 +1,5 @@
 import Auth from "./Auth/index.ts";
-import User from "./User/index.ts";
+import User from "./Profile/index.ts";
 
 import { Elysia } from "elysia";
 

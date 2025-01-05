@@ -13,12 +13,14 @@
     "elysia": "latest",
     "elysia-helmet": "^2.0.0",
     "logestic": "^1.2.4",
+    "nodemailer": "^6.9.16",
     "oslo": "^1.2.1"
   },
   "prisma": {
     "seed": "bun prisma/seeds/index.ts"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.17",
     "bun-types": "latest",
     "prisma": "^6.1.0"
   },
