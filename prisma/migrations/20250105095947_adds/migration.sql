@@ -37,7 +37,7 @@ CREATE TABLE "TemporalTokens" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "hashed_token" TEXT NOT NULL,
-    "expires_at" DATE NOT NULL,
+    "expires_at" TIMESTAMP(3) NOT NULL,
     "token_type" INTEGER NOT NULL,
     "created_time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
