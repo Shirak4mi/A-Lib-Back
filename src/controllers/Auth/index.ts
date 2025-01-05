@@ -1,6 +1,6 @@
 import RecoverPassword from "./methods/RecoverPassword";
 import ForgotPassword from "./methods/ForgotPassword";
-import ValidateEmail from "./methods/ValidateEmail";
+import ValidateEmail from "./methods/VerifyEmail";
 import Register from "./methods/Register";
 import LogOut from "./methods/Logout";
 import Login from "./methods/Login";

@@ -54,7 +54,7 @@ model TemporalTokens {
   id           Int        @id @default(autoincrement()) @db.Integer
   user_id      Int        @db.Integer
   hashed_token String
-  expires_at   DateTime   @db.Date
+  expires_at   DateTime
   token_type   Int        @db.Integer
   created_time DateTime   @default(now())
   User         User       @relation(references: [id], fields: [user_id], onDelete: Cascade)

@@ -4,7 +4,7 @@ import { Elysia } from "elysia";
 import { prisma } from "@/db";
 
 export default new Elysia().post(
-  "ValidateEmail/:token",
+  "VerifyEmail/:token",
   async ({ params: { token } }) => {
     try {
       if (!token || !token.length) throw new BadRequestException("Invalid Token");
@@ -25,6 +25,14 @@ export default new Elysia().post(
 
       const expiredDateTime = new Date(expires_at).getTime();
       const currentDateTime = new Date().getTime();
+
+      console.log(
+        expiredDateTime,
+        currentDateTime,
+        currentDateTime > expiredDateTime,
+        currentDateTime === expiredDateTime,
+        currentDateTime === expiredDateTime || currentDateTime > expiredDateTime
+      );
 
       if (currentDateTime === expiredDateTime || currentDateTime > expiredDateTime)
         throw new BadRequestException("Invalid Token");
