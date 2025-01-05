@@ -28,9 +28,9 @@ model User {
   updated_at       DateTime @updatedAt @db.Date
 
   // Relations
-  Document_Type Document_Type      @relation(fields: [document_type_id], references: [id])
+  Document_Type Document_type      @relation(fields: [document_type_id], references: [id])
   Status        User_Status        @relation(fields: [status_id], references: [id])
-  User_Type     User_Type          @relation(fields: [user_type_id], references: [id])
+  User_Type     User_type          @relation(fields: [user_type_id], references: [id])
   Sessions      Session[]
   Booked_By     Booking[]          @relation("Booked_By")
   Booked_From   Booking[]          @relation("Booked_From")
@@ -56,7 +56,7 @@ model ActiveTempTokens {
   token_type   Int        @db.Integer
   created_time DateTime   @default(now())
   User         User       @relation(references: [id], fields: [user_id], onDelete: Cascade)
-  Type         Token_Type @relation(fields: [token_type], references: [id])
+  Type         Token_type @relation(fields: [token_type], references: [id])
 }
 
 model OAuthAccount {
@@ -65,7 +65,7 @@ model OAuthAccount {
   provider_account_id String
   user_id             Int           @db.Integer
   User                User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  Provider            Provider_Type @relation(fields: [provider_id], references: [id])
+  Provider            Provider_type @relation(fields: [provider_id], references: [id])
 
   @@unique([provider_id, provider_account_id])
 }
@@ -137,7 +137,7 @@ model Expertise {
 
 // Type models -> Regulatory models
 
-model Token_Type {
+model Token_type {
   id               Int                @id @default(autoincrement()) @db.Integer
   name             String             @db.VarChar(255)
   create_time      DateTime           @default(now()) @db.Date
@@ -145,7 +145,7 @@ model Token_Type {
   ActiveTempTokens ActiveTempTokens[]
 }
 
-model Provider_Type {
+model Provider_type {
   id           Int            @id @default(autoincrement()) @db.Integer
   name         String         @db.VarChar(255)
   create_time  DateTime       @default(now()) @db.Date
@@ -153,7 +153,7 @@ model Provider_Type {
   OAuthAccount OAuthAccount[]
 }
 
-model Document_Type {
+model Document_type {
   id          Int      @id @default(autoincrement()) @db.SmallInt
   name        String   @db.VarChar(30)
   create_time DateTime @default(now()) @db.Date
@@ -169,7 +169,7 @@ model User_Status {
   User       User[]
 }
 
-model User_Type {
+model User_type {
   id         Int      @id @default(autoincrement()) @db.SmallInt
   name       String   @db.VarChar(60)
   created_at DateTime @default(now()) @db.Date
