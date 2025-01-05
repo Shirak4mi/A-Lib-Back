@@ -24,9 +24,9 @@ export const loginUserDTO = t.Object({
 
 export type TLoginUserDTO = Static<typeof loginUserDTO>;
 
-export const validateEmailDTO = t.Object({ hashed_token: t.String({ minLength: 1 }) });
+export const commonTokenDTO = t.Object({ token: t.String({ minLength: 1 }) });
 
-export type TValidateEmailDTO = Static<typeof validateEmailDTO>;
+export type TCommonTokenDTO = Static<typeof commonTokenDTO>;
 
 export const sessionCookie = t.Cookie({ session: t.String({ minLength: 1 }) });
 

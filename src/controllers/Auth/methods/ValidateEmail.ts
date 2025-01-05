@@ -1,15 +1,15 @@
 import { BadRequestException } from "@/utils/error";
-import { validateEmailDTO } from "../dtos";
+import { commonTokenDTO } from "../dtos";
 import { Elysia } from "elysia";
 import { prisma } from "@/db";
 
 export default new Elysia().post(
-  "ValidateEmail/:hashed_token",
-  async ({ params: { hashed_token } }) => {
+  "ValidateEmail/:token",
+  async ({ params: { token } }) => {
     try {
-      if (!hashed_token || !hashed_token.length) throw new BadRequestException("Invalid Token");
+      if (!token || !token.length) throw new BadRequestException("Invalid Token");
 
-      const existingToken = await prisma.temporalTokens.findFirst({ where: { hashed_token }, select: { id: true } });
+      const existingToken = await prisma.temporalTokens.findFirst({ where: { hashed_token: token }, select: { id: true } });
 
       if (!existingToken) throw new BadRequestException("The provided Token doesnt exists");
 
@@ -44,5 +44,5 @@ export default new Elysia().post(
       throw e;
     }
   },
-  { params: validateEmailDTO }
+  { params: commonTokenDTO }
 );
