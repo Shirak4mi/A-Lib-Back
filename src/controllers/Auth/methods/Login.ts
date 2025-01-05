@@ -12,6 +12,7 @@ export default new Elysia().post(
         where: { email },
         select: {
           Status: { select: { name: true, id: true } },
+          verified_email: true,
           password_salt: true,
           first_name: true,
           last_name: true,
@@ -41,7 +42,6 @@ export default new Elysia().post(
       if (!session) return;
 
       // New Cookie Creation
-      set.status = 201;
       cookie["session"].set({
         secure: Bun.env.NODE_ENV === "production",
         maxAge: session.expires_at,
@@ -50,6 +50,8 @@ export default new Elysia().post(
         httpOnly: true,
         path: "/",
       });
+      // Set Response Status => 201 -> A new Session Was Created
+      set.status = 201;
       return rest;
     } catch (e) {
       throw e;
