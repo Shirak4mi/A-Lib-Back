@@ -27,6 +27,7 @@ export default new Elysia().post(
     const nUser = await prisma.user.create({
       data: {
         password: await Bun.password.hash(password_salt + body.password, { algorithm: "argon2d" }),
+        Tokens: { create: { Type: { connect: { id: 1 } }, hashed_token, expires_at } },
         Document_Type: { connect: { id: body.document_type_id } },
         birth_date: commonBDR(body.birth_date ?? "01/01/1777"),
         username: body.email.split("@")[0],
@@ -49,7 +50,7 @@ export default new Elysia().post(
     if (!nUser) throw new InternalServerErrorException("Unknown!");
 
     const sentEmail = sendWelcomeMail(hashed_token, nUser.email);
-    
+
     if (!sentEmail) throw new InternalServerErrorException("Couldn't send email");
 
     set.headers["accept-encoding"] = "application/json";

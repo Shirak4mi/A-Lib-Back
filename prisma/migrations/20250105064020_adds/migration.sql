@@ -130,53 +130,53 @@ CREATE TABLE "Expertise" (
 );
 
 -- CreateTable
-CREATE TABLE "Token_Type" (
+CREATE TABLE "Token_type" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "create_time" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "update_time" DATE NOT NULL,
 
-    CONSTRAINT "Token_Type_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Token_type_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Provider_Type" (
+CREATE TABLE "Provider_type" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "create_time" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "update_time" DATE NOT NULL,
 
-    CONSTRAINT "Provider_Type_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Provider_type_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Document_Type" (
+CREATE TABLE "Document_type" (
     "id" SMALLSERIAL NOT NULL,
     "name" VARCHAR(30) NOT NULL,
     "create_time" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "update_time" DATE NOT NULL,
 
-    CONSTRAINT "Document_Type_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Document_type_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "User_Status" (
+CREATE TABLE "User_status" (
     "id" SMALLSERIAL NOT NULL,
     "name" VARCHAR(60) NOT NULL,
     "created_at" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATE NOT NULL,
 
-    CONSTRAINT "User_Status_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "User_status_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "User_Type" (
+CREATE TABLE "User_type" (
     "id" SMALLSERIAL NOT NULL,
     "name" VARCHAR(60) NOT NULL,
     "created_at" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATE NOT NULL,
 
-    CONSTRAINT "User_Type_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "User_type_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -198,13 +198,13 @@ CREATE UNIQUE INDEX "ActiveTempTokens_hashed_token_key" ON "ActiveTempTokens"("h
 CREATE UNIQUE INDEX "OAuthAccount_provider_id_provider_account_id_key" ON "OAuthAccount"("provider_id", "provider_account_id");
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_document_type_id_fkey" FOREIGN KEY ("document_type_id") REFERENCES "Document_Type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_document_type_id_fkey" FOREIGN KEY ("document_type_id") REFERENCES "Document_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_status_id_fkey" FOREIGN KEY ("status_id") REFERENCES "User_Status"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_status_id_fkey" FOREIGN KEY ("status_id") REFERENCES "User_status"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_user_type_id_fkey" FOREIGN KEY ("user_type_id") REFERENCES "User_Type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_user_type_id_fkey" FOREIGN KEY ("user_type_id") REFERENCES "User_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -213,13 +213,13 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_user_id_fkey" FOREIGN KEY ("user_i
 ALTER TABLE "ActiveTempTokens" ADD CONSTRAINT "ActiveTempTokens_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ActiveTempTokens" ADD CONSTRAINT "ActiveTempTokens_token_type_fkey" FOREIGN KEY ("token_type") REFERENCES "Token_Type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ActiveTempTokens" ADD CONSTRAINT "ActiveTempTokens_token_type_fkey" FOREIGN KEY ("token_type") REFERENCES "Token_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "OAuthAccount" ADD CONSTRAINT "OAuthAccount_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OAuthAccount" ADD CONSTRAINT "OAuthAccount_provider_id_fkey" FOREIGN KEY ("provider_id") REFERENCES "Provider_Type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "OAuthAccount" ADD CONSTRAINT "OAuthAccount_provider_id_fkey" FOREIGN KEY ("provider_id") REFERENCES "Provider_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Booking" ADD CONSTRAINT "Booking_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
