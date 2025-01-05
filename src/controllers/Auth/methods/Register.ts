@@ -1,8 +1,9 @@
+import { commonBDR, generateDate, generateRandomSalt, generateToken } from "@/utils/functions";
 import { ConflictException, InternalServerErrorException } from "@/utils/error";
-import { commonBDR, generateRandomSalt } from "@/utils/functions";
 import { createUserDTO } from "../dtos";
 import { Elysia } from "elysia";
 import { prisma } from "@/db";
+import { sendWelcomeMail } from "@/utils/mail";
 
 export default new Elysia().post(
   "/Register",
@@ -20,8 +21,8 @@ export default new Elysia().post(
     if (isNotUniqueUser) throw new ConflictException("User already Exists!");
 
     const password_salt = generateRandomSalt();
-    //     const expires_at = generateDate(2, "h");
-    //     const hashed_token = generateToken();
+    const expires_at = generateDate(2, "h");
+    const hashed_token = generateToken();
 
     const nUser = await prisma.user.create({
       data: {
@@ -46,8 +47,10 @@ export default new Elysia().post(
     });
 
     if (!nUser) throw new InternalServerErrorException("Unknown!");
-    //     const sentEmail = sendWelcomeMail(hashed_token, nUser.email);
-    //     if (!sentEmail) throw new InternalServerErrorException("Couldn't send email");
+
+    const sentEmail = sendWelcomeMail(hashed_token, nUser.email);
+    
+    if (!sentEmail) throw new InternalServerErrorException("Couldn't send email");
 
     set.headers["accept-encoding"] = "application/json";
     return nUser;
