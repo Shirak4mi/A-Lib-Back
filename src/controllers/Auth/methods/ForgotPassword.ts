@@ -27,8 +27,6 @@ export default new Elysia().post(
       const sendEmail = await sendRecoverEmail(hashed_token, email);
       if (!sendEmail) throw new Error("Could not send email, please try again later!");
 
-      console.log(sendEmail);
-
       return user;
     } catch (e) {
       console.log(e);

@@ -25,15 +25,7 @@ export default new Elysia().post(
 
       const expiredDateTime = new Date(expires_at).getTime();
       const currentDateTime = new Date().getTime();
-
-      console.log(
-        expiredDateTime,
-        currentDateTime,
-        currentDateTime > expiredDateTime,
-        currentDateTime === expiredDateTime,
-        currentDateTime === expiredDateTime || currentDateTime > expiredDateTime
-      );
-
+      
       if (currentDateTime === expiredDateTime || currentDateTime > expiredDateTime)
         throw new BadRequestException("Invalid Token");
 
