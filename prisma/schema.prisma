@@ -8,99 +8,66 @@ datasource db {
 }
 
 model User {
-  id               Int            @id @default(autoincrement()) @db.SmallInt
-  first_name       String         @db.VarChar(255)
-  last_name        String         @db.VarChar(255)
-  email            String         @unique @db.VarChar(255)
-  verified_email   Boolean        @default(false) @db.Boolean
-  username         String         @unique @db.VarChar(255)
-  password_salt    String         @db.VarChar(255)
-  password         String         @db.VarChar(255)
-  birth_date       DateTime       @db.Date
-  phone_number     String         @db.VarChar(100)
-  address          String         @db.Text
-  document_id      String         @unique @db.VarChar(40)
-  document_type_id Int            @db.SmallInt
-  status_id        Int            @default(1) @db.SmallInt
-  created_at       DateTime       @default(now()) @db.Date
-  updated_at       DateTime       @updatedAt @db.Date
-  Document_Type    Document_Type  @relation(fields: [document_type_id], references: [id])
-  Status           User_Status    @relation(fields: [status_id], references: [id])
-  Bookings         Booking[]
-  Feedback         Feedback[]
-  User_Otps        User_Otps[]
-  Session          User_Session[]
+  id               Int      @id @default(autoincrement()) @db.SmallInt
+  first_name       String   @db.VarChar(255)
+  last_name        String   @db.VarChar(255)
+  email            String   @unique @db.VarChar(255)
+  verified_email   Boolean  @default(false) @db.Boolean
+  username         String   @unique @db.VarChar(255)
+  password_salt    String   @db.VarChar(255)
+  password         String   @db.VarChar(255)
+  birth_date       DateTime @db.Date
+  phone_number     String   @db.VarChar(100)
+  address          String   @db.Text
+  document_id      String   @unique @db.VarChar(40)
+  is_bookable      Boolean  @default(false) // Indicates if the user can be booked
+  document_type_id Int      @db.SmallInt
+  status_id        Int      @default(1) @db.SmallInt
+  user_type_id     Int      @default(1) @db.SmallInt
+  created_at       DateTime @default(now()) @db.Date
+  updated_at       DateTime @updatedAt @db.Date
+
+  // Relations
+  Document_Type Document_Type      @relation(fields: [document_type_id], references: [id])
+  Status        User_Status        @relation(fields: [status_id], references: [id])
+  User_Type     User_Type          @relation(fields: [user_type_id], references: [id])
+  Sessions      Session[]
+  Booked_By     Booking[]          @relation("Booked_By")
+  Booked_From   Booking[]          @relation("Booked_From")
+  Feedback_From Feedback[]         @relation("FeedbackFrom")
+  Feedback_To   Feedback[]         @relation("FeedbackTo")
+  OAuthAccount  OAuthAccount[]
+  Tokens        ActiveTempTokens[]
 }
 
-model Barber {
-  id               Int              @id @default(autoincrement()) @db.SmallInt
-  first_name       String           @db.VarChar(255)
-  last_name        String           @db.VarChar(255)
-  email            String           @unique @db.VarChar(255)
-  address          String           @db.Text
-  document_id      String           @unique @db.VarChar(40)
-  document_type_id Int              @db.SmallInt
-  status_id        Int              @db.SmallInt
-  created_at       DateTime         @default(now()) @db.Date
-  updated_at       DateTime         @updatedAt @db.Date
-  Document_Type    Document_Type    @relation(fields: [document_type_id], references: [id])
-  Status           User_Status      @relation(fields: [status_id], references: [id])
-  Bookings         Booking[]
-  Schedule         Schedule[]
-  Feedback         Feedback[]
-  Expertise        Expertise[]
-  Barber_Session   Barber_Session[]
-  Barber_Otps      Barber_Otps[]
-}
-
-model User_Status {
-  id         Int      @id @default(autoincrement()) @db.SmallInt
-  name       String   @db.VarChar(60)
-  created_at DateTime @default(now()) @db.Date
-  updated_at DateTime @updatedAt @db.Date
-  User       User[]
-  Barber     Barber[]
-}
-
-model User_Session {
+model Session {
   id         String   @id @default(uuid()) @db.VarChar(255)
   user_id    Int      @db.SmallInt
   expires_at Int      @db.Integer
-  User       User     @relation(fields: [user_id], references: [id])
-  created_at DateTime @default(now()) @db.Date
-}
-
-model Barber_Session {
-  id         String   @id @default(uuid()) @db.VarChar(255)
-  barber_id  Int      @db.SmallInt
-  expires_at Int      @db.Integer
-  Barber     Barber   @relation(fields: [barber_id], references: [id])
-  created_at DateTime @default(now()) @db.Date
-}
-
-model User_Otps {
-  id         String   @id @default(uuid()) @db.VarChar(255)
-  code       String   @db.VarChar(50)
-  user_id    Int      @db.SmallInt
   created_at DateTime @default(now()) @db.Date
   User       User     @relation(fields: [user_id], references: [id])
 }
 
-model Barber_Otps {
-  id         String   @id @default(uuid()) @db.VarChar(255)
-  code       String   @db.VarChar(50)
-  barber_id  Int      @db.SmallInt
-  created_at DateTime @default(now()) @db.Date
-  Barber     Barber   @relation(fields: [barber_id], references: [id])
+model ActiveTempTokens {
+  id           Int        @id @default(autoincrement()) @db.Integer
+  user_id      Int        @unique @db.Integer
+  hashed_token String     @unique
+  expires_at   DateTime
+  token_type   Int        @db.Integer
+  created_time DateTime   @default(now())
+  User         User       @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  Type         Token_Type @relation(fields: [token_type], references: [id])
 }
 
-model Document_Type {
-  id          Int      @id @default(autoincrement()) @db.SmallInt
-  name        String   @db.VarChar(30)
-  create_time DateTime @default(now()) @db.Date
-  update_time DateTime @updatedAt @db.Date
-  Users       User[]
-  Barber      Barber[]
+model OAuthAccount {
+  id                  Int           @id @default(autoincrement()) @db.Integer
+  provider_id         Int           @db.SmallInt
+  provider_account_id String
+  user_id             Int           @db.Integer
+  User                User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  Provider            Provider_Type @relation(fields: [provider_id], references: [id])
+
+  @@unique([provider_id, provider_account_id])
 }
 
 model Service {
@@ -118,28 +85,26 @@ model Schedule {
   date         DateTime @db.Date
   start_time   DateTime @db.Date
   end_time     DateTime @db.Date
-  barber_id    Int      @db.SmallInt
   is_available Boolean  @default(false) @db.Boolean
   created_at   DateTime @default(now()) @db.Date
   updated_at   DateTime @updatedAt @db.Date
-  Barber       Barber   @relation(fields: [barber_id], references: [id])
 }
 
 model Booking {
-  id         Int            @id @default(autoincrement()) @db.SmallInt
-  date       DateTime       @db.Date
-  start_time DateTime       @db.Time()
-  end_time   DateTime       @db.Time()
-  user_id    Int            @db.SmallInt
-  service_id Int            @db.SmallInt
-  barber_id  Int            @db.SmallInt
-  status_id  Int            @db.SmallInt
-  created_at DateTime       @default(now()) @db.Date
-  updated_at DateTime       @updatedAt @db.Date
-  Status     Booking_Status @relation(fields: [status_id], references: [id])
-  User       User           @relation(fields: [user_id], references: [id])
-  Barber     Barber         @relation(fields: [barber_id], references: [id])
-  Service    Service        @relation(fields: [service_id], references: [id])
+  id          Int            @id @default(autoincrement()) @db.SmallInt
+  date        DateTime       @db.Date
+  start_time  DateTime       @db.Time
+  end_time    DateTime       @db.Time
+  user_id     Int            @db.SmallInt // The user who makes the booking
+  bookable_id Int            @db.SmallInt // The user who is being booked  
+  service_id  Int            @db.SmallInt
+  status_id   Int            @db.SmallInt
+  created_at  DateTime       @default(now()) @db.Date
+  updated_at  DateTime       @updatedAt @db.Date
+  Booked_By   User           @relation("Booked_By", fields: [user_id], references: [id])
+  Booked_From User           @relation("Booked_From", fields: [bookable_id], references: [id])
+  Status      Booking_Status @relation(fields: [status_id], references: [id])
+  Service     Service        @relation(fields: [service_id], references: [id])
 }
 
 model Booking_Status {
@@ -151,22 +116,63 @@ model Booking_Status {
 }
 
 model Feedback {
-  id         Int      @id @default(autoincrement()) @db.SmallInt
-  comment    String?  @db.Text
-  rating     Int      @db.Integer
-  user_id    Int      @db.SmallInt
-  barber_id  Int      @db.SmallInt
-  User       User     @relation(fields: [user_id], references: [id])
-  Barber     Barber   @relation(fields: [barber_id], references: [id])
-  created_at DateTime @default(now()) @db.Date
-  updated_at DateTime @updatedAt @db.Date
+  id           Int      @id @default(autoincrement()) @db.SmallInt
+  comment      String?  @db.Text
+  rating       Int      @db.Integer
+  user_id      Int      @db.SmallInt
+  from_user_id Int      @db.SmallInt
+  to_user_id   Int      @db.SmallInt
+  created_at   DateTime @default(now()) @db.Date
+  updated_at   DateTime @updatedAt @db.Date
+  From_user    User     @relation("FeedbackFrom", fields: [from_user_id], references: [id])
+  To_user      User     @relation("FeedbackTo", fields: [to_user_id], references: [id])
 }
 
 model Expertise {
   id         Int      @id @default(autoincrement()) @db.SmallInt
   name       String   @db.VarChar(255)
-  barber_id  Int      @db.SmallInt
-  Barber     Barber   @relation(fields: [barber_id], references: [id])
   created_at DateTime @default(now()) @db.Date
   updated_at DateTime @updatedAt @db.Date
+}
+
+// Type models -> Regulatory models
+
+model Token_Type {
+  id               Int                @id @default(autoincrement()) @db.Integer
+  name             String             @db.VarChar(255)
+  create_time      DateTime           @default(now()) @db.Date
+  update_time      DateTime           @updatedAt @db.Date
+  ActiveTempTokens ActiveTempTokens[]
+}
+
+model Provider_Type {
+  id           Int            @id @default(autoincrement()) @db.Integer
+  name         String         @db.VarChar(255)
+  create_time  DateTime       @default(now()) @db.Date
+  update_time  DateTime       @updatedAt @db.Date
+  OAuthAccount OAuthAccount[]
+}
+
+model Document_Type {
+  id          Int      @id @default(autoincrement()) @db.SmallInt
+  name        String   @db.VarChar(30)
+  create_time DateTime @default(now()) @db.Date
+  update_time DateTime @updatedAt @db.Date
+  Users       User[]
+}
+
+model User_Status {
+  id         Int      @id @default(autoincrement()) @db.SmallInt
+  name       String   @db.VarChar(60)
+  created_at DateTime @default(now()) @db.Date
+  updated_at DateTime @updatedAt @db.Date
+  User       User[]
+}
+
+model User_Type {
+  id         Int      @id @default(autoincrement()) @db.SmallInt
+  name       String   @db.VarChar(60)
+  created_at DateTime @default(now()) @db.Date
+  updated_at DateTime @updatedAt @db.Date
+  User       User[]
 }
