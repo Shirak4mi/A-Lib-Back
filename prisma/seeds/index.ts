@@ -22,7 +22,7 @@ async function main() {
       skipDuplicates: true,
     });
 
-    const documet_types = await prisma.document_Type.createMany({
+    const documet_types = await prisma.document_type.createMany({
       data: [
         { name: "Dominican Id (Cédula)" },
         { name: "Drivers License" },
@@ -33,7 +33,7 @@ async function main() {
       skipDuplicates: true,
     });
 
-    const token_types = await prisma.token_Type
+    const token_types = await prisma.token_type
 
     console.log({ documet_types, user_status, booking_status });
   } catch (e) {
