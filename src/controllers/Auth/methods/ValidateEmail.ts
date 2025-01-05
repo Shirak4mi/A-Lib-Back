@@ -9,9 +9,13 @@ export default new Elysia().post(
     try {
       if (!hashed_token || !hashed_token.length) throw new BadRequestException("Invalid Token");
 
+      const existingToken = await prisma.temporalTokens.findFirst({ where: { hashed_token }, select: { id: true } });
+
+      if (!existingToken) throw new BadRequestException("The provided Token doesnt exists");
+
       const user = await prisma.temporalTokens.findUnique({
         select: { User: { select: { id: true } }, expires_at: true },
-        where: { hashed_token },
+        where: { id: existingToken.id },
       });
 
       if (!user) throw new BadRequestException("Not valid user related to token");
@@ -27,9 +31,9 @@ export default new Elysia().post(
 
       const validatedUser = await prisma.user.update({
         data: {
-          verified_email: true,
+          Tokens: { delete: { id: existingToken.id } },
           Status: { connect: { id: 2 } },
-          Tokens: { delete: { hashed_token } },
+          verified_email: true,
         },
         select: { email: true },
         where: { id: User.id },

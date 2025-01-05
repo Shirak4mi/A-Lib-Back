@@ -13,32 +13,23 @@ export default new Elysia().post(
       const expires_at = generateDate(2, "h");
       const hashed_token = generateToken();
 
-      const newToken = await prisma.temporalTokens.create({
+      const user = await prisma.user.update({
         data: {
-          expires_at,
-          hashed_token,
-          Type: { connect: { id: 3 } },
-          User: { connect: { email } },
+          Tokens: { create: { hashed_token, expires_at, Type: { connect: { id: 3 } } } },
+          Status: { connect: { id: 3 } },
         },
+        select: { email: true },
+        where: { email },
       });
 
-      //  const user = await prisma.user.update({
-      //    data: {
-      //      Tokens: { create: { hashed_token, expires_at, Type: { connect: { id: 3 } } } },
-      //      Status: { connect: { id: 3 } },
-      //    },
-      //    select: { email: true },
-      //    where: { id: validateToken.User.id },
-      //  });
-
-      //  if (!user) throw new InternalServerErrorException("");
+      if (!user) throw new InternalServerErrorException("");
 
       const sendEmail = await sendRecoverEmail(hashed_token, email);
       if (!sendEmail) throw new Error("Could not send email, please try again later!");
 
       console.log(sendEmail);
 
-      return sendEmail;
+      return user;
     } catch (e) {
       console.log(e);
       throw e;
