@@ -36,7 +36,9 @@ export default new Elysia().post(
       });
 
       return validatedUser;
-    } catch (e) {}
+    } catch (e) {
+      throw e;
+    }
   },
   { params: validateEmailDTO }
 );
