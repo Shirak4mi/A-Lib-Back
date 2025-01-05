@@ -25,12 +25,13 @@ export default new Elysia().post(
         data: {
           password_salt,
           Tokens: { delete: { id } },
+          Status: { connect: { id: 2 } },
           password: await Bun.password.hash(password_salt + password, { algorithm: "argon2d" }),
         },
         select: { email: true },
         where: { id: user_id },
       });
-      
+
       if (!updateUser) throw new InternalServerErrorException("Couldn't change password try later");
       return updateUser;
     } catch (e) {
