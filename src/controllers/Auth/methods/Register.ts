@@ -30,6 +30,7 @@ export default new Elysia().post(
         Tokens: { create: { Type: { connect: { id: 1 } }, hashed_token, expires_at } },
         Document_Type: { connect: { id: body.document_type_id } },
         birth_date: commonBDR(body.birth_date ?? "01/01/1777"),
+        User_Type: { connect: { id: body.account_type_id } },
         username: body.email.split("@")[0],
         phone_number: body.phone_number,
         Status: { connect: { id: 1 } },
