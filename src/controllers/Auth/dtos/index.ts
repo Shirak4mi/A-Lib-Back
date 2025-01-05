@@ -31,3 +31,11 @@ export type TValidateEmailDTO = Static<typeof validateEmailDTO>;
 export const sessionCookie = t.Cookie({ session: t.String({ minLength: 1 }) });
 
 export type TSessionCookie = Static<typeof sessionCookie>;
+
+export const recoverUserDTO = t.Object({ email: t.String({ minLength: 1, format: "email" }) });
+
+export type TRecoverUserDTO = Static<typeof recoverUserDTO>;
+
+export const restorePasswordDTO = t.Object({ password: t.String({ minLength: 8 }) });
+
+export type TRestorePasswordDTO = Static<typeof restorePasswordDTO>;

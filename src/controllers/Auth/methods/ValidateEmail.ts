@@ -28,7 +28,7 @@ export default new Elysia().post(
       const validatedUser = await prisma.user.update({
         data: {
           verified_email: true,
-          Status: { update: { id: 2 } },
+          Status: { connect: { id: 2 } },
           Tokens: { delete: { hashed_token } },
         },
         select: { email: true },
