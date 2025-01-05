@@ -23,3 +23,7 @@ export const loginUserDTO = t.Object({
 });
 
 export type TLoginUserDTO = Static<typeof loginUserDTO>;
+
+export const validateEmailDTO = t.Object({ token: t.String({ minLength: 1 }) });
+
+export type TValidateEmailDTO = Static<typeof validateEmailDTO>;

@@ -1,12 +1,12 @@
 import { commonBDR, generateDate, generateRandomSalt, generateToken } from "@/utils/functions";
 import { ConflictException, InternalServerErrorException } from "@/utils/error";
+import { sendWelcomeMail } from "@/utils/mail";
 import { createUserDTO } from "../dtos";
 import { Elysia } from "elysia";
 import { prisma } from "@/db";
-import { sendWelcomeMail } from "@/utils/mail";
 
 export default new Elysia().post(
-  "/Register",
+  "Register",
   async ({ body, set }) => {
     const isNotUniqueUser = await prisma.user.findFirst({
       select: { id: true, email: true, document_id: true },
@@ -50,11 +50,14 @@ export default new Elysia().post(
 
     if (!nUser) throw new InternalServerErrorException("Unknown!");
 
+    // Send Email if user was successfully created
     const sentEmail = sendWelcomeMail(hashed_token, nUser.email);
 
     if (!sentEmail) throw new InternalServerErrorException("Couldn't send email");
 
+    // Set Response Headers
     set.headers["accept-encoding"] = "application/json";
+
     return nUser;
   },
   { body: createUserDTO }

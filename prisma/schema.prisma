@@ -8,38 +8,38 @@ datasource db {
 }
 
 model User {
-  id               Int                @id @default(autoincrement()) @db.SmallInt
-  first_name       String             @db.VarChar(255)
-  last_name        String             @db.VarChar(255)
-  email            String             @unique @db.VarChar(255)
-  verified_email   Boolean            @default(false) @db.Boolean
-  username         String             @unique @db.VarChar(255)
-  password_salt    String             @db.VarChar(255)
-  password         String             @db.VarChar(255)
-  birth_date       DateTime           @db.Date
-  phone_number     String             @db.VarChar(100)
-  address          String             @db.Text
-  document_id      String             @unique @db.VarChar(40)
-  is_bookable      Boolean            @default(false) @db.Boolean
+  id               Int              @id @default(autoincrement()) @db.SmallInt
+  first_name       String           @db.VarChar(255)
+  last_name        String           @db.VarChar(255)
+  email            String           @unique @db.VarChar(255)
+  verified_email   Boolean          @default(false) @db.Boolean
+  username         String           @unique @db.VarChar(255)
+  password_salt    String           @db.VarChar(255)
+  password         String           @db.VarChar(255)
+  birth_date       DateTime         @db.Date
+  phone_number     String           @db.VarChar(100)
+  address          String           @db.Text
+  document_id      String           @unique @db.VarChar(40)
+  is_bookable      Boolean          @default(false) @db.Boolean
   // Reg fields
-  document_type_id Int                @db.SmallInt
-  status_id        Int                @default(1) @db.SmallInt
-  user_type_id     Int                @default(1) @db.SmallInt
-  created_at       DateTime           @default(now()) @db.Date
-  updated_at       DateTime?          @updatedAt @db.Date
+  document_type_id Int              @db.SmallInt
+  status_id        Int              @default(1) @db.SmallInt
+  user_type_id     Int              @default(1) @db.SmallInt
+  created_at       DateTime         @default(now()) @db.Date
+  updated_at       DateTime?        @updatedAt @db.Date
   // Relations
-  Document_Type    Document_type      @relation(fields: [document_type_id], references: [id])
-  Status           User_status        @relation(fields: [status_id], references: [id])
-  User_Type        User_type          @relation(fields: [user_type_id], references: [id])
+  Document_Type    Document_type    @relation(fields: [document_type_id], references: [id])
+  Status           User_status      @relation(fields: [status_id], references: [id])
+  User_Type        User_type        @relation(fields: [user_type_id], references: [id])
   Sessions         Session[]
-  Booked_By        Booking[]          @relation("Booked_By")
-  Booked_From      Booking[]          @relation("Booked_From")
+  Booked_By        Booking[]        @relation("Booked_By")
+  Booked_From      Booking[]        @relation("Booked_From")
   Schedule         Schedule[]
-  Feedback_From    Feedback[]         @relation("FeedbackFrom")
-  Feedback_To      Feedback[]         @relation("FeedbackTo")
+  Feedback_From    Feedback[]       @relation("FeedbackFrom")
+  Feedback_To      Feedback[]       @relation("FeedbackTo")
   Expertise        Expertise[]
   OAuthAccount     OAuthAccount[]
-  Tokens           ActiveTempTokens[]
+  Tokens           TemporalTokens[]
 }
 
 model Session {
@@ -50,7 +50,7 @@ model Session {
   User       User     @relation(fields: [user_id], references: [id])
 }
 
-model ActiveTempTokens {
+model TemporalTokens {
   id           Int        @id @default(autoincrement()) @db.Integer
   user_id      Int        @unique @db.Integer
   hashed_token String     @unique
@@ -144,11 +144,11 @@ model Expertise {
 // Type models -> Regulatory models
 
 model Token_type {
-  id               Int                @id @default(autoincrement()) @db.Integer
-  name             String             @db.VarChar(255)
-  create_time      DateTime           @default(now()) @db.Date
-  update_time      DateTime           @updatedAt @db.Date
-  ActiveTempTokens ActiveTempTokens[]
+  id             Int              @id @default(autoincrement()) @db.Integer
+  name           String           @db.VarChar(255)
+  create_time    DateTime         @default(now()) @db.Date
+  update_time    DateTime         @updatedAt @db.Date
+  TemporalTokens TemporalTokens[]
 }
 
 model Provider_type {
