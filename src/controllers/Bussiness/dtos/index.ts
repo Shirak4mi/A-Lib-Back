@@ -1,9 +1,5 @@
 import { t, type Static } from "elysia";
 
-export const commonTokenDTO = t.Object({ token: t.String({ minLength: 1 }) });
-
-export type TCommonTokenDTO = Static<typeof commonTokenDTO>;
-
 export const CreateBussinessDTO = t.Object({
   name: t.String({ minLength: 1 }),
   description: t.String({ minLength: 1 }),

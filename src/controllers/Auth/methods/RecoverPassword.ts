@@ -1,6 +1,7 @@
 import { BadRequestException, InternalServerErrorException } from "@/utils/error";
-import { commonTokenDTO, restorePasswordDTO } from "../dtos";
 import { generateRandomSalt } from "@/utils/functions";
+import { CommonTokenDTO } from "@/common/DTO";
+import { restorePasswordDTO } from "../dtos";
 import { prisma } from "@/db";
 
 import { Elysia } from "elysia";
@@ -38,5 +39,5 @@ export default new Elysia().post(
       throw e;
     }
   },
-  { params: commonTokenDTO, body: restorePasswordDTO }
+  { params: CommonTokenDTO, body: restorePasswordDTO }
 );

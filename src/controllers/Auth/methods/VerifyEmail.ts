@@ -1,7 +1,8 @@
 import { BadRequestException } from "@/utils/error";
-import { commonTokenDTO } from "../dtos";
-import { Elysia } from "elysia";
+import { CommonTokenDTO } from "@/common/DTO";
 import { prisma } from "@/db";
+
+import { Elysia } from "elysia";
 
 export default new Elysia().post(
   "VerifyEmail/:token",
@@ -25,7 +26,7 @@ export default new Elysia().post(
 
       const expiredDateTime = new Date(expires_at).getTime();
       const currentDateTime = new Date().getTime();
-      
+
       if (currentDateTime === expiredDateTime || currentDateTime > expiredDateTime)
         throw new BadRequestException("Invalid Token");
 
@@ -44,5 +45,5 @@ export default new Elysia().post(
       throw e;
     }
   },
-  { params: commonTokenDTO }
+  { params: CommonTokenDTO }
 );

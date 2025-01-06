@@ -23,10 +23,6 @@ export const loginUserDTO = t.Object({
 
 export type TLoginUserDTO = Static<typeof loginUserDTO>;
 
-export const commonTokenDTO = t.Object({ token: t.String({ minLength: 1 }) });
-
-export type TCommonTokenDTO = Static<typeof commonTokenDTO>;
-
 export const sessionCookie = t.Cookie({ session: t.String({ minLength: 1 }) });
 
 export type TSessionCookie = Static<typeof sessionCookie>;

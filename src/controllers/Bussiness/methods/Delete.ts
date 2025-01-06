@@ -5,4 +5,4 @@ export default new Elysia().delete("Delete/:id", ({ params: { id } }) => {
   } catch (e) {
     throw e;
   }
-});
+}, );

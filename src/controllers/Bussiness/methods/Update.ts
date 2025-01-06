@@ -1,4 +1,5 @@
-import { commonTokenDTO, UpdateBussinessDTO } from "../dtos";
+import { CommonTokenDTO } from "@/common/DTO";
+import { UpdateBussinessDTO } from "../dtos";
 import { Elysia } from "elysia";
 
 export default new Elysia().patch(
@@ -10,7 +11,7 @@ export default new Elysia().patch(
     }
   },
   {
-    params: commonTokenDTO,
+    params: CommonTokenDTO,
     body: UpdateBussinessDTO,
   }
 );
