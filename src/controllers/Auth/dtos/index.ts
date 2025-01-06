@@ -1,7 +1,6 @@
 import { t, type Static } from "elysia";
 
 export const createUserDTO = t.Object({
-  // Required Fields
   address: t.String({ minLength: 1 }),
   birth_date: t.String({ minLength: 1 }),
   first_name: t.String({ minLength: 1 }),
@@ -22,10 +21,6 @@ export const loginUserDTO = t.Object({
 });
 
 export type TLoginUserDTO = Static<typeof loginUserDTO>;
-
-export const sessionCookie = t.Cookie({ session: t.String({ minLength: 1 }) });
-
-export type TSessionCookie = Static<typeof sessionCookie>;
 
 export const recoverUserDTO = t.Object({ email: t.String({ minLength: 1, format: "email" }) });
 

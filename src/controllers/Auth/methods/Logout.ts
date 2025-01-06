@@ -1,5 +1,5 @@
 import { BadRequestException } from "@/utils/error";
-import { sessionCookie } from "../dtos";
+import { sessionCookie } from "@/common/DTO";
 import { prisma } from "@/db";
 
 import { Elysia } from "elysia";
