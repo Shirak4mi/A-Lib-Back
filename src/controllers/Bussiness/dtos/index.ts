@@ -17,3 +17,17 @@ export type TCreateBussinessDTO = Static<typeof CreateBussinessDTO>;
 export const UpdateBussinessDTO = t.Object({});
 
 export type TUpdateBussinessDTO = Static<typeof UpdateBussinessDTO>;
+
+export const FilterBussinessDTO = t.Object({
+  name: t.Optional(t.String({ minLength: 1 })),
+  description: t.Optional(t.String({ minLength: 1 })),
+  address: t.Optional(t.String({ minLength: 1 })),
+  phone_number: t.Optional(t.String({ minLength: 1 })),
+  email: t.Optional(t.String({ minLength: 1, format: "email" })),
+  open_from: t.Optional(t.String({ minLength: 1 })),
+  open_to: t.Optional(t.String({ minLength: 1 })),
+  bussiness_type: t.Optional(t.Number({ minimum: 1 })),
+  owner_id: t.Optional(t.Number({ minimum: 1 })),
+});
+
+export type TFilterBussinessDTO = Static<typeof FilterBussinessDTO>;
