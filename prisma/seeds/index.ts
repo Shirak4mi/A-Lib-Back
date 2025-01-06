@@ -44,7 +44,7 @@ async function main() {
     });
 
     const user_types = await prisma.user_type.createMany({
-      data: [{ name: "Barber" }, { name: "Customer" }],
+      data: [{ name: "Customer" }, { name: "Owner" }, { name: "Barber" }],
       skipDuplicates: true,
     });
 

@@ -37,7 +37,9 @@ model User {
   Schedule         Schedule[]
   Feedback_From    Feedback[]       @relation("FeedbackFrom")
   Feedback_To      Feedback[]       @relation("FeedbackTo")
+  Business         Business[]       @relation("Owner")
   Expertise        Expertise[]
+  QueueEntry       QueueEntry[]
   OAuthAccount     OAuthAccount[]
   Tokens           TemporalTokens[]
 }
@@ -53,7 +55,7 @@ model Session {
 model TemporalTokens {
   id           Int        @id @default(autoincrement()) @db.Integer
   user_id      Int        @db.Integer
-  hashed_token String
+  hashed_token String     @db.VarChar(80)
   expires_at   DateTime
   token_type   Int        @db.Integer
   created_time DateTime   @default(now())
@@ -80,6 +82,8 @@ model Service {
   created_at  DateTime  @default(now()) @db.Date
   updated_at  DateTime? @updatedAt @db.Date
   Bookings    Booking[]
+  Business    Business? @relation(fields: [businessId], references: [id])
+  businessId  Int?      @db.SmallInt
 }
 
 model Schedule {
@@ -103,20 +107,63 @@ model Booking {
   bookable_id Int            @db.SmallInt // The user who is being booked  
   service_id  Int            @db.SmallInt
   status_id   Int            @db.SmallInt
+  business_id Int            @db.SmallInt
   created_at  DateTime       @default(now()) @db.Date
   updated_at  DateTime?      @updatedAt @db.Date
   Booked_By   User           @relation("Booked_By", fields: [user_id], references: [id])
   Booked_From User           @relation("Booked_From", fields: [bookable_id], references: [id])
   Status      Booking_Status @relation(fields: [status_id], references: [id])
   Service     Service        @relation(fields: [service_id], references: [id])
+  Business    Business       @relation(fields: [business_id], references: [id])
 }
 
-model Booking_Status {
+model Queue {
+  id           Int          @id @default(autoincrement()) @db.SmallInt
+  business_id  Int          @db.SmallInt
+  created_at   DateTime     @default(now()) @db.Date
+  updated_at   DateTime?    @updatedAt @db.Date
+  // Relations
+  Business     Business     @relation(fields: [business_id], references: [id])
+  QueueEntries QueueEntry[]
+}
+
+model QueueEntry {
   id         Int       @id @default(autoincrement()) @db.SmallInt
-  name       String    @db.VarChar(255)
+  queue_id   Int       @db.SmallInt
+  user_id    Int       @db.SmallInt
+  position   Int       @db.SmallInt
   created_at DateTime  @default(now()) @db.Date
   updated_at DateTime? @updatedAt @db.Date
-  Booking    Booking[]
+  // Relations
+  Queue      Queue     @relation(fields: [queue_id], references: [id])
+  User       User      @relation(fields: [user_id], references: [id])
+}
+
+model Expertise {
+  id         Int       @id @default(autoincrement()) @db.SmallInt
+  name       String    @db.VarChar(255)
+  user_id    Int       @db.SmallInt
+  created_at DateTime  @default(now()) @db.Date
+  updated_at DateTime? @updatedAt @db.Date
+  User       User      @relation(fields: [user_id], references: [id])
+}
+
+model Business {
+  id           Int       @id @default(autoincrement()) @db.SmallInt
+  name         String    @db.VarChar(255)
+  description  String?   @db.Text
+  address      String    @db.Text
+  phone_number String    @db.VarChar(100)
+  email        String    @unique @db.VarChar(255)
+  owner_id     Int       @db.SmallInt
+  created_at   DateTime  @default(now()) @db.Date
+  updated_at   DateTime? @updatedAt @db.Date
+
+  // Relations
+  Owner    User      @relation("Owner", fields: [owner_id], references: [id])
+  Queue    Queue[]
+  Services Service[]
+  Bookings Booking[]
 }
 
 model Feedback {
@@ -130,15 +177,6 @@ model Feedback {
   updated_at   DateTime? @updatedAt @db.Date
   From_user    User      @relation("FeedbackFrom", fields: [from_user_id], references: [id])
   To_user      User      @relation("FeedbackTo", fields: [to_user_id], references: [id])
-}
-
-model Expertise {
-  id         Int       @id @default(autoincrement()) @db.SmallInt
-  name       String    @db.VarChar(255)
-  user_id    Int       @db.SmallInt
-  created_at DateTime  @default(now()) @db.Date
-  updated_at DateTime? @updatedAt @db.Date
-  User       User      @relation(fields: [user_id], references: [id])
 }
 
 // Type models -> Regulatory models
@@ -181,4 +219,12 @@ model User_type {
   created_at DateTime @default(now()) @db.Date
   updated_at DateTime @updatedAt @db.Date
   User       User[]
+}
+
+model Booking_Status {
+  id         Int       @id @default(autoincrement()) @db.SmallInt
+  name       String    @db.VarChar(255)
+  created_at DateTime  @default(now()) @db.Date
+  updated_at DateTime? @updatedAt @db.Date
+  Booking    Booking[]
 }
