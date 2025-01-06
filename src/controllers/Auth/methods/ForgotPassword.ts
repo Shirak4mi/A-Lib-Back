@@ -1,5 +1,5 @@
 import { generateDate, generateToken } from "@/utils/functions";
-import { BadRequestException, InternalServerErrorException } from "@/utils/error";
+import { InternalServerErrorException } from "@/utils/error";
 import { sendRecoverEmail } from "@/utils/mail";
 import { recoverUserDTO } from "../dtos";
 import { prisma } from "@/db";

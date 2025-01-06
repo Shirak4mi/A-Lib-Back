@@ -149,21 +149,23 @@ model Expertise {
 }
 
 model Business {
-  id           Int       @id @default(autoincrement()) @db.SmallInt
-  name         String    @db.VarChar(255)
-  description  String?   @db.Text
-  address      String    @db.Text
-  phone_number String    @db.VarChar(100)
-  email        String    @unique @db.VarChar(255)
-  owner_id     Int       @db.SmallInt
-  created_at   DateTime  @default(now()) @db.Date
-  updated_at   DateTime? @updatedAt @db.Date
-
+  id                Int            @id @default(autoincrement()) @db.SmallInt
+  name              String         @db.VarChar(255)
+  description       String?        @db.Text
+  address           String         @db.Text
+  phone_number      String         @db.VarChar(100)
+  email             String         @unique @db.VarChar(255)
+  owner_id          Int            @db.SmallInt
+  // Reg fields
+  bussiness_type_id Int            @db.SmallInt
+  created_at        DateTime       @default(now()) @db.Date
+  updated_at        DateTime?      @updatedAt @db.Date
   // Relations
-  Owner    User      @relation("Owner", fields: [owner_id], references: [id])
-  Queue    Queue[]
-  Services Service[]
-  Bookings Booking[]
+  Bussiness_Type    Bussiness_type @relation(fields: [bussiness_type_id], references: [id])
+  Owner             User           @relation("Owner", fields: [owner_id], references: [id])
+  Queue             Queue[]
+  Services          Service[]
+  Bookings          Booking[]
 }
 
 model Feedback {
@@ -227,4 +229,12 @@ model Booking_Status {
   created_at DateTime  @default(now()) @db.Date
   updated_at DateTime? @updatedAt @db.Date
   Booking    Booking[]
+}
+
+model Bussiness_type {
+  id         Int        @id @default(autoincrement()) @db.SmallInt
+  name       String     @db.VarChar(60)
+  created_at DateTime   @default(now()) @db.Date
+  updated_at DateTime   @updatedAt @db.Date
+  Business   Business[]
 }
