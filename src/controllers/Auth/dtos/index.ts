@@ -11,7 +11,6 @@ export const createUserDTO = t.Object({
   account_type_id: t.Number({ minLength: 1 }),
   document_id: t.String({ minLength: 1 }),
   password: t.String({ minLength: 1 }),
-  user_type: t.Number({ minLength: 1, minimum: 1 }),
   email: t.String({ minLength: 1, format: "email" }),
 });
 

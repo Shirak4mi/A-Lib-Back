@@ -62,8 +62,7 @@ export function getRandomHash(): string {
   "account_type_id": 1,
   "document_id": "402372991999",
   "password": "admin1234",
-  "email": "yassett.ynfante@gmail.com",
-  "user_type":1
+  "email": "yassett.ynfante@gmail.com"
 }
  * 
  */
