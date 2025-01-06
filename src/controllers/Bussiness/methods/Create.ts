@@ -13,10 +13,14 @@ export default new Elysia().post(
           email: body.email,
           address: body.address,
           phone_number: body.phone_number,
+          open_from: body.open_from,
+          open_to: body.open_to,
           Owner: { connect: { id: body.owner_id } },
           Bussiness_Type: { connect: { id: body.bussiness_type } },
         },
       });
+
+      console.log({ createBussiness });
     } catch (e) {
       throw e;
     }

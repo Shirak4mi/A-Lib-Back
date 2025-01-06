@@ -157,7 +157,7 @@ model Business {
   name              String         @db.VarChar(255)
   description       String?        @db.Text
   address           String         @db.Text
-  phone_number      String         @db.VarChar(100)
+  phone_number      String         @unique @db.VarChar(100)
   email             String         @unique @db.VarChar(255)
   open_from         DateTime       @db.Time
   open_to           DateTime       @db.Time
