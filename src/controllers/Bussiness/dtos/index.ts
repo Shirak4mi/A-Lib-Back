@@ -28,6 +28,7 @@ export const FilterBussinessDTO = t.Object({
   open_to: t.Optional(t.String({ minLength: 1 })),
   bussiness_type: t.Optional(t.Number({ minimum: 1 })),
   owner_id: t.Optional(t.Number({ minimum: 1 })),
+  page: t.Number({ minimum: 1 }),
 });
 
 export type TFilterBussinessDTO = Static<typeof FilterBussinessDTO>;

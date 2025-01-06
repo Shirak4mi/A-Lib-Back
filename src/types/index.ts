@@ -1,4 +1,4 @@
-export type TMetaDataResponse = {
+export type MetaDataResponse = {
   data: Array<any>;
   metadata: {
     total: number;
@@ -10,6 +10,7 @@ export type TMetaDataResponse = {
     next: number;
   };
 };
+
 
 export interface ICommonError {
   code: 200 | 401 | 404 | 500;

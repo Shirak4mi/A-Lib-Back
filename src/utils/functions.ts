@@ -1,7 +1,7 @@
 import { type TimeSpanUnit, TimeSpan, createDate } from "oslo";
 import { alphabet, generateRandomString } from "oslo/crypto";
 
-import type { TMetaDataResponse } from "@/types";
+import type { MetaDataResponse } from "@/types";
 
 export function generateRandomSalt() {
   return generateRandomString(16, alphabet("a-z", "A-Z", "0-9"));
@@ -15,15 +15,16 @@ export function generateDate(ammount: number, unit: TimeSpanUnit): Date {
   return createDate(new TimeSpan(ammount, unit));
 }
 
-export function AddMetaData(size: number, data: Array<any>, cursor: number, totalRegisters: number): TMetaDataResponse {
-  const hasNext = Math.floor(totalRegisters / size);
+export function AddMetaData(data: Array<any>, cursor: number, totalRegisters: number): MetaDataResponse {
+  const hasNext = Math.floor(totalRegisters / 50);
+
   return {
     data,
     metadata: {
-      totalRegisters,
       total: data.length,
-      totalPerPage: size,
       totalPages: hasNext,
+      totalPerPage: 50,
+      totalRegisters,
       currentCursor: cursor,
       prev: cursor === 1 ? 1 : cursor - 1,
       next: hasNext / cursor < 1 ? 0 : cursor + 1,
