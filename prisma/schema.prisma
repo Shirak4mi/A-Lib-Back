@@ -119,6 +119,9 @@ model Booking {
 
 model Queue {
   id           Int          @id @default(autoincrement()) @db.SmallInt
+  open_from    DateTime     @db.Time
+  open_to      DateTime     @db.Time
+  // Reg Fields
   business_id  Int          @db.SmallInt
   created_at   DateTime     @default(now()) @db.Date
   updated_at   DateTime?    @updatedAt @db.Date
@@ -129,9 +132,10 @@ model Queue {
 
 model QueueEntry {
   id         Int       @id @default(autoincrement()) @db.SmallInt
+  position   Int       @db.SmallInt
+  // Reg Fields
   queue_id   Int       @db.SmallInt
   user_id    Int       @db.SmallInt
-  position   Int       @db.SmallInt
   created_at DateTime  @default(now()) @db.Date
   updated_at DateTime? @updatedAt @db.Date
   // Relations
@@ -155,8 +159,10 @@ model Business {
   address           String         @db.Text
   phone_number      String         @db.VarChar(100)
   email             String         @unique @db.VarChar(255)
-  owner_id          Int            @db.SmallInt
+  open_from         DateTime       @db.Time
+  open_to           DateTime       @db.Time
   // Reg fields
+  owner_id          Int            @db.SmallInt
   bussiness_type_id Int            @db.SmallInt
   created_at        DateTime       @default(now()) @db.Date
   updated_at        DateTime?      @updatedAt @db.Date

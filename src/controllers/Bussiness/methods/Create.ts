@@ -7,7 +7,16 @@ export default new Elysia().post(
   "Create",
   async ({ body }) => {
     try {
-      // const createBussiness = await prisma.
+      const createBussiness = await prisma.business.create({
+        data: {
+          name: body.name,
+          email: body.email,
+          address: body.address,
+          phone_number: body.phone_number,
+          Owner: { connect: { id: body.owner_id } },
+          Bussiness_Type: { connect: { id: body.bussiness_type } },
+        },
+      });
     } catch (e) {
       throw e;
     }
