@@ -1,5 +1,5 @@
-import { Elysia } from "elysia";
 import { commonTokenDTO, UpdateBussinessDTO } from "../dtos";
+import { Elysia } from "elysia";
 
 export default new Elysia().patch(
   "Update/:token",
