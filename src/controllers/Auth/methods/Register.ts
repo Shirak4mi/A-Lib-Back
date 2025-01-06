@@ -2,8 +2,9 @@ import { commonBDR, generateDate, generateRandomSalt, generateToken } from "@/ut
 import { ConflictException, InternalServerErrorException } from "@/utils/error";
 import { sendWelcomeMail } from "@/utils/mail";
 import { createUserDTO } from "../dtos";
-import { Elysia } from "elysia";
 import { prisma } from "@/db";
+
+import { Elysia } from "elysia";
 
 export default new Elysia().post(
   "Register",

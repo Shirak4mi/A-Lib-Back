@@ -1,17 +1,18 @@
-import { CommonTokenDTO } from "@/common/DTO";
+import { IdBasedTokenDTO } from "@/common/DTO";
 import { UpdateBussinessDTO } from "../dtos";
+
 import { Elysia } from "elysia";
 
 export default new Elysia().patch(
-  "Update/:token",
-  async ({ params: { token }, body }) => {
+  "Update/:id",
+  async ({ params: { id }, body }) => {
     try {
     } catch (e) {
       throw e;
     }
   },
   {
-    params: CommonTokenDTO,
+    params: IdBasedTokenDTO,
     body: UpdateBussinessDTO,
   }
 );

@@ -1,8 +1,9 @@
 import { createUserSessions, invalidateUserSessions } from "@/utils/session";
 import { BadRequestException, UnauthorizedException } from "@/utils/error";
-import { loginUserDTO, sessionCookie } from "../dtos";
-import { Elysia } from "elysia";
+import { loginUserDTO } from "../dtos";
 import { prisma } from "@/db";
+
+import { Elysia } from "elysia";
 
 export default new Elysia().post(
   "Login",

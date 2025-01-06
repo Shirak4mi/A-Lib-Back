@@ -1,8 +1,8 @@
 import { BadRequestException } from "@/utils/error";
 import { sessionCookie } from "../dtos";
+import { prisma } from "@/db";
 
 import { Elysia } from "elysia";
-import { prisma } from "@/db";
 
 export default new Elysia().post(
   "logout",
