@@ -1,8 +1,14 @@
+import { IdBasedTokenDTO } from "@/common/DTO";
+
 import { Elysia } from "elysia";
 
-export default new Elysia().get("GetBussiness", async () => {
-  try {
-  } catch (e) {
-    throw e;
-  }
-});
+export default new Elysia().get(
+  "Get",
+  async ({ params: { id } }) => {
+    try {
+    } catch (e) {
+      throw e;
+    }
+  },
+  { params: IdBasedTokenDTO }
+);

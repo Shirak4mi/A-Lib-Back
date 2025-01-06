@@ -4,7 +4,7 @@ export const CommonTokenDTO = t.Object({ token: t.String({ minLength: 1 }) });
 
 export type TCommonTokenDTO = Static<typeof CommonTokenDTO>;
 
-export const IdBasedTokenDTO = t.Object({ id: t.String({ minLength: 1 }) });
+export const IdBasedTokenDTO = t.Object({ id: t.Number({ minLength: 1 }) });
 
 export type TIdBasedTokenDTO = Static<typeof IdBasedTokenDTO>;
 

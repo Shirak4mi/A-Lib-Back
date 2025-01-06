@@ -1,4 +1,5 @@
 import { IdBasedTokenDTO } from "@/common/DTO";
+
 import { Elysia } from "elysia";
 
 export default new Elysia().get(

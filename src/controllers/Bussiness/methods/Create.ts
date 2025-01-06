@@ -1,6 +1,6 @@
+import { InternalServerErrorException, UnauthorizedException } from "@/utils/error";
 import { CreateBussinessDTO } from "../dtos";
 import { prisma } from "@/db";
-import { InternalServerErrorException, UnauthorizedException } from "@/utils/error";
 
 import { Elysia } from "elysia";
 
