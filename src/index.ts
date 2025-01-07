@@ -3,10 +3,7 @@ import { helmet } from "elysia-helmet";
 import { routes } from "@/controllers";
 import { Elysia } from "elysia";
 
-const helmetExec = helmet({
-  contentSecurityPolicy: false,
-  crossOriginResourcePolicy: { policy: "same-site" },
-});
+const helmetExec = helmet({ contentSecurityPolicy: false, crossOriginResourcePolicy: { policy: "same-site" } });
 
 new Elysia({ name: "Renter API", strictPath: true, precompile: true })
   .use(swagger({ theme: "Dark", version: "0.1", exclude: ["/swagger", "/swagger/json"] }))

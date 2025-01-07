@@ -3,11 +3,11 @@ import { alphabet, generateRandomString } from "oslo/crypto";
 
 import type { MetaDataResponse } from "@/types";
 
-export function generateRandomSalt() {
+export function generateRandomSalt(): string {
   return generateRandomString(16, alphabet("a-z", "A-Z", "0-9"));
 }
 
-export function generateToken() {
+export function generateToken(): string {
   return generateRandomString(12, alphabet("a-z", "A-Z", "0-9"));
 }
 

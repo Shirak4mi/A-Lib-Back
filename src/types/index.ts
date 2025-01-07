@@ -11,7 +11,6 @@ export type MetaDataResponse = {
   };
 };
 
-
 export interface ICommonError {
   code: 200 | 401 | 404 | 500;
   reason?: string | Error | unknown;
