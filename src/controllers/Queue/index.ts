@@ -6,7 +6,7 @@ import GetQueuePositions from "./methods/GetQueuePositions.ts";
 
 import { Elysia } from "elysia";
 
-export default new Elysia({ prefix: "Queue", normalize: true })
+export default new Elysia({ prefix: "Queue", normalize: true, detail: { tags: ["Queue"] } })
   .use(GetQueuePositions)
   .use(CreateQueuePosition)
   .use(DeleteQueuePosition)

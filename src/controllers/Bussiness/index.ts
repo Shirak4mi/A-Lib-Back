@@ -7,7 +7,7 @@ import Get from "./methods/Get.ts";
 
 import { Elysia } from "elysia";
 
-export default new Elysia({ prefix: "Bussiness", normalize: true })
+export default new Elysia({ prefix: "Business", normalize: true, detail: { tags: ["Business"] } })
   .use(Create)
   .use(Update)
   .use(Delete)

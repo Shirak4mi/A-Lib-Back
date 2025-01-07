@@ -8,7 +8,7 @@ import Me from "./methods/Me";
 
 import { Elysia } from "elysia";
 
-export default new Elysia({ prefix: "Auth", normalize: true })
+export default new Elysia({ prefix: "Auth", normalize: true, detail: { tags: ["Authentication"] } })
   .use(Login)
   .use(Me)
   .use(Register)
