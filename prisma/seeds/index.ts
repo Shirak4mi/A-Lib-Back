@@ -48,12 +48,12 @@ async function main() {
       skipDuplicates: true,
     });
 
-    const bussiness_type = await prisma.bussiness_type.createMany({
+    const business_type = await prisma.business_type.createMany({
       data: [{ name: "Barbershop" }],
       skipDuplicates: true,
     });
 
-    console.log({ documet_types, user_status, booking_status, token_types, provider_types, user_types, bussiness_type });
+    console.log({ documet_types, user_status, booking_status, token_types, provider_types, user_types, business_type });
   } catch (e) {
     console.error(e);
   }
