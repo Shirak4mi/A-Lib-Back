@@ -1,4 +1,4 @@
-import Bussiness from "./Bussiness/index.ts";
+import Bussiness from "./Business/index.ts";
 import Bookins from "./Bookins/index.ts";
 import Profile from "./Profile/index.ts";
 import Queue from "./Queue/index.ts";

@@ -11,3 +11,7 @@ export type TIdBasedTokenDTO = Static<typeof IdBasedTokenDTO>;
 export const sessionCookie = t.Cookie({ session: t.String({ minLength: 1 }) });
 
 export type TSessionCookie = Static<typeof sessionCookie>;
+
+export const CommonPaginationDTO = t.Object({ page: t.Number({ minimum: 1 }) });
+
+export type TCommonPaginationDTO = Static<typeof CommonPaginationDTO>;
