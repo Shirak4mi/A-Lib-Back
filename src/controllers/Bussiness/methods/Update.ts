@@ -7,6 +7,11 @@ export default new Elysia().patch(
   "Update/:id",
   async ({ params: { id }, body }) => {
     try {
+
+
+
+
+      
     } catch (e) {
       throw e;
     }
