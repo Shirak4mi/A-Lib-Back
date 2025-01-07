@@ -22,7 +22,17 @@ export default new Elysia().patch(
           Owner: { select: { email: true } },
           Bussiness_Type: { select: { name: true } },
         },
-        data: {},
+        data: {
+          name: body.name,
+          email: body.email,
+          address: body.address,
+          description: body.description,
+          phone_number: body.phone_number,
+          Owner: { connect: { id: body.owner_id } },
+          open_to: new Date("2019-01-16 " + body.open_to),
+          open_from: new Date("2019-01-16 " + body.open_from),
+          Bussiness_Type: { connect: { id: body.bussiness_type } },
+        },
       });
 
       if (!updatedBussiness) throw new InternalServerErrorException();
