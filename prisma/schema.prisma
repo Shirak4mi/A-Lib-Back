@@ -8,40 +8,41 @@ datasource db {
 }
 
 model User {
-  id               Int              @id @default(autoincrement()) @db.SmallInt
-  first_name       String           @db.VarChar(255)
-  last_name        String           @db.VarChar(255)
-  email            String           @unique @db.VarChar(255)
-  verified_email   Boolean          @default(false) @db.Boolean
-  username         String           @unique @db.VarChar(255)
-  password_salt    String           @db.VarChar(255)
-  password         String           @db.VarChar(255)
-  birth_date       DateTime         @db.Date
-  phone_number     String           @db.VarChar(100)
-  address          String           @db.Text
-  document_id      String           @unique @db.VarChar(40)
-  is_bookable      Boolean          @default(false) @db.Boolean
+  id               Int                  @id @default(autoincrement()) @db.SmallInt
+  first_name       String               @db.VarChar(255)
+  last_name        String               @db.VarChar(255)
+  email            String               @unique @db.VarChar(255)
+  verified_email   Boolean              @default(false) @db.Boolean
+  username         String               @unique @db.VarChar(255)
+  password_salt    String               @db.VarChar(255)
+  password         String               @db.VarChar(255)
+  birth_date       DateTime             @db.Date
+  phone_number     String               @db.VarChar(100)
+  address          String               @db.Text
+  document_id      String               @unique @db.VarChar(40)
+  is_bookable      Boolean              @default(false) @db.Boolean
   // Reg fields
-  document_type_id Int              @db.SmallInt
-  status_id        Int              @default(1) @db.SmallInt
-  user_type_id     Int              @default(1) @db.SmallInt
-  created_at       DateTime         @default(now()) @db.Date
-  updated_at       DateTime?        @updatedAt @db.Date
+  document_type_id Int                  @db.SmallInt
+  status_id        Int                  @default(1) @db.SmallInt
+  user_type_id     Int                  @default(1) @db.SmallInt
+  created_at       DateTime             @default(now()) @db.Date
+  updated_at       DateTime?            @updatedAt @db.Date
   // Relations
-  Document_Type    Document_type    @relation(fields: [document_type_id], references: [id])
-  Status           User_status      @relation(fields: [status_id], references: [id])
-  User_Type        User_type        @relation(fields: [user_type_id], references: [id])
+  Document_Type    Document_type        @relation(fields: [document_type_id], references: [id])
+  Status           User_status          @relation(fields: [status_id], references: [id])
+  User_Type        User_type            @relation(fields: [user_type_id], references: [id])
   Sessions         Session[]
-  Booked_By        Booking[]        @relation("Booked_By")
-  Booked_From      Booking[]        @relation("Booked_From")
+  Booked_By        Booking[]            @relation("Booked_By")
+  Booked_From      Booking[]            @relation("Booked_From")
   Schedule         Schedule[]
-  Feedback_From    Feedback[]       @relation("FeedbackFrom")
-  Feedback_To      Feedback[]       @relation("FeedbackTo")
-  Business         Business[]       @relation("Owner")
+  Feedback_From    Feedback[]           @relation("FeedbackFrom")
+  Feedback_To      Feedback[]           @relation("FeedbackTo")
+  Business         Business[]           @relation("Owner")
   Expertise        Expertise[]
   QueueEntry       QueueEntry[]
   OAuthAccount     OAuthAccount[]
   Tokens           TemporalTokens[]
+  Employees        Business_employees[]
 }
 
 model Session {
@@ -154,25 +155,36 @@ model Expertise {
 }
 
 model Business {
-  id                Int           @id @default(autoincrement()) @db.SmallInt
-  name              String        @db.VarChar(255)
-  description       String?       @db.Text
-  address           String        @db.Text
-  phone_number      String        @unique @db.VarChar(100)
-  email             String        @unique @db.VarChar(255)
-  open_from         DateTime      @db.Time
-  open_to           DateTime      @db.Time
+  id                Int                  @id @default(autoincrement()) @db.SmallInt
+  name              String               @db.VarChar(255)
+  description       String?              @db.Text
+  address           String               @db.Text
+  phone_number      String               @unique @db.VarChar(100)
+  email             String               @unique @db.VarChar(255)
+  open_from         DateTime             @db.Time
+  open_to           DateTime             @db.Time
   // Reg fields
-  owner_id          Int           @db.SmallInt
-  bussiness_type_id Int           @db.SmallInt
-  created_at        DateTime      @default(now()) @db.Date
-  updated_at        DateTime?     @updatedAt @db.Date
+  owner_id          Int                  @db.SmallInt
+  bussiness_type_id Int                  @db.SmallInt
+  created_at        DateTime             @default(now()) @db.Date
+  updated_at        DateTime?            @updatedAt @db.Date
   // Relations
-  Bussiness_Type    Business_type @relation(fields: [bussiness_type_id], references: [id])
-  Owner             User          @relation("Owner", fields: [owner_id], references: [id])
+  Bussiness_Type    Business_type        @relation(fields: [bussiness_type_id], references: [id])
+  Owner             User                 @relation("Owner", fields: [owner_id], references: [id])
   Queue             Queue[]
   Services          Service[]
   Bookings          Booking[]
+  Employees         Business_employees[]
+}
+
+model Business_employees {
+  id          Int       @id @default(autoincrement()) @db.Integer
+  business_id Int       @db.Integer
+  employee_id Int       @db.Integer
+  created_at  DateTime  @default(now()) @db.Date
+  updated_at  DateTime? @updatedAt @db.Date
+  Business    Business  @relation(fields: [business_id], references: [id])
+  Employee    User      @relation(fields: [employee_id], references: [id])
 }
 
 model Feedback {
