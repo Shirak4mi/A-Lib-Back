@@ -4,13 +4,11 @@ import ValidateEmail from "./methods/VerifyEmail";
 import Register from "./methods/Register";
 import LogOut from "./methods/Logout";
 import Login from "./methods/Login";
-import Me from "./methods/Me";
 
 import { Elysia } from "elysia";
 
 export default new Elysia({ prefix: "Auth", normalize: true, detail: { tags: ["Authentication"] } })
   .use(Login)
-  .use(Me)
   .use(Register)
   .use(ValidateEmail)
   .use(ForgotPassword)
