@@ -53,17 +53,18 @@ export function getRandomHash(): string {
 
 /**
  * 
- * {
-  "address": "calle X uwehuiwfe",
-  "birth_date": "27/09/1999",
-  "first_name": "Jose",
-  "last_name": "Ynfante",
-  "phone_number": "8099919999",
-  "document_type_id": 1,
-  "account_type_id": 1,
-  "document_id": "402372991999",
-  "password": "admin1234",
-  "email": "yassett.ynfante@gmail.com"
-}
+ * 
+  {
+    "address": "calle X uwehuiwfe",
+    "birth_date": "27/09/1999",
+    "first_name": "Jose",
+    "last_name": "Ynfante",
+    "phone_number": "8099919999",
+    "document_type_id": 1,
+    "account_type_id": 1,
+    "document_id": "402372991999",
+    "password": "admin1234",
+    "email": "yassett.ynfante@gmail.com"
+  }
  * 
  */
