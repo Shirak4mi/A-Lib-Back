@@ -5,8 +5,9 @@ import GetDetails from "./methods/GetDetails.ts";
 
 import { Elysia } from "elysia";
 
-export default new Elysia({ prefix: "Bookins", normalize: true, detail: { tags: ["Bookin"] } })
-  .use(CreateBookin)
-  .use(UpdateBookin)
-  .use(DeleteBookin)
-  .use(GetDetails);
+export default new Elysia({ prefix: "Bookins", normalize: true, detail: { tags: ["Bookin"] } }).use([
+  CreateBookin,
+  UpdateBookin,
+  DeleteBookin,
+  GetDetails,
+]);

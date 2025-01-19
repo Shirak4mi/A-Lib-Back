@@ -6,4 +6,4 @@ import Auth from "./Auth/index.ts";
 
 import { Elysia } from "elysia";
 
-export const routes = new Elysia({ prefix: "api" }).use(Auth).use(Profile).use(Bussiness).use(Queue).use(Bookins);
+export const routes = new Elysia({ prefix: "api" }).use([Auth, Profile, Bussiness, Queue, Bookins]);

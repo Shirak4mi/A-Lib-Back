@@ -7,10 +7,11 @@ import GetByBusiness from "./methods/GetByBusiness.ts";
 
 import { Elysia } from "elysia";
 
-export default new Elysia({ prefix: "Queue", normalize: true, detail: { tags: ["Queue"] } })
-  .use(GetByBusiness)
-  .use(GetQueuePositions)
-  .use(CreateQueuePosition)
-  .use(DeleteQueuePosition)
-  .use(UpdateQueuePosition)
-  .use(FinishQueuePosition);
+export default new Elysia({ prefix: "Queue", normalize: true, detail: { tags: ["Queue"] } }).use([
+  GetByBusiness,
+  GetQueuePositions,
+  CreateQueuePosition,
+  DeleteQueuePosition,
+  UpdateQueuePosition,
+  FinishQueuePosition,
+]);

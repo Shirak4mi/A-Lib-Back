@@ -4,7 +4,8 @@ import GetMe from "./methods/GetMe.ts";
 
 import { Elysia } from "elysia";
 
-export default new Elysia({ prefix: "Profile", normalize: true, detail: { tags: ["Profile"] } })
-  .use(GetMe)
-  .use(Update)
-  .use(GetBookins);
+export default new Elysia({ prefix: "Profile", normalize: true, detail: { tags: ["Profile"] } }).use([
+  GetMe,
+  Update,
+  GetBookins,
+]);

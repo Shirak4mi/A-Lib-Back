@@ -7,10 +7,11 @@ import Login from "./methods/Login";
 
 import { Elysia } from "elysia";
 
-export default new Elysia({ prefix: "Auth", normalize: true, detail: { tags: ["Authentication"] } })
-  .use(Login)
-  .use(Register)
-  .use(ValidateEmail)
-  .use(ForgotPassword)
-  .use(RecoverPassword)
-  .use(LogOut);
+export default new Elysia({ prefix: "Auth", normalize: true, detail: { tags: ["Authentication"] } }).use([
+  Login,
+  Register,
+  ValidateEmail,
+  ForgotPassword,
+  RecoverPassword,
+  LogOut,
+]);
