@@ -21,6 +21,7 @@ model User {
   address          String               @db.Text
   document_id      String               @unique @db.VarChar(40)
   is_bookable      Boolean              @default(false) @db.Boolean
+  user_pictures    Json?                @db.JsonB
   // Reg fields
   document_type_id Int                  @db.SmallInt
   status_id        Int                  @default(1) @db.SmallInt

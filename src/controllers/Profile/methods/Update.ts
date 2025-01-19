@@ -1,8 +1,9 @@
+import { InternalServerErrorException, UnauthorizedException } from "@/utils/error";
+import { commonBDR, generateRandomSalt } from "@/utils/functions";
 import { saveUserProfilePicture } from "@/utils/file_management";
 import { session_cookie_name } from "@/utils/constants";
-import { generateRandomSalt } from "@/utils/functions";
-import { UnauthorizedException } from "@/utils/error";
 import { sessionCookie } from "@/common/DTO";
+import { UpdateProfileDTO } from "../dtos";
 import { prisma } from "@/db";
 
 import { Elysia } from "elysia";
@@ -22,9 +23,30 @@ export default new Elysia().patch(
       // Sugary Destructs
       const { User } = isValidSession;
       const { birth_date, document_type_id, password } = body;
-
       const isFileSaved = await saveUserProfilePicture(body.profile_picture, `public/${User.username}`);
       const password_salt = generateRandomSalt();
+
+      const uptd_user = await prisma.user.update({
+        where: { id: User.id },
+        data: {
+          ...(password && { password: await Bun.password.hash(password_salt + password, { algorithm: "argon2d" }) }),
+          ...(document_type_id && { Document_Type: { connect: { id: parseInt(document_type_id.toString()) } } }),
+          ...(birth_date && { birth_date: commonBDR(birth_date ?? "01/01/1777") }),
+          user_pictures: isFileSaved ? JSON.stringify(isFileSaved) : undefined,
+          ...(password ? { password_salt } : { password_salt: undefined }),
+          phone_number: body.phone_number,
+          Status: { connect: { id: 2 } },
+          document_id: body.document_id,
+          first_name: body.first_name,
+          last_name: body.last_name,
+          username: body.username,
+          email: body.email,
+        },
+        select: {},
+      });
+
+      if (!uptd_user) throw new InternalServerErrorException("Could not create user");
+      return uptd_user;
     } catch (e) {
       throw e;
     }
