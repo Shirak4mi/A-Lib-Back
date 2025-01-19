@@ -1,4 +1,5 @@
-import { t, type Static } from "elysia";
+import { session_cookie_name } from "@/utils/constants";
+import { type Static, t } from "elysia";
 
 export const CommonTokenDTO = t.Object({ token: t.String({ minLength: 1 }) });
 
@@ -8,7 +9,7 @@ export const IdBasedTokenDTO = t.Object({ id: t.Number({ minLength: 1 }) });
 
 export type TIdBasedTokenDTO = Static<typeof IdBasedTokenDTO>;
 
-export const sessionCookie = t.Cookie({ session: t.String({ minLength: 1 }) });
+export const sessionCookie = t.Cookie({ [session_cookie_name]: t.String({ minLength: 1 }) });
 
 export type TSessionCookie = Static<typeof sessionCookie>;
 

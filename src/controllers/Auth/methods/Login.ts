@@ -1,5 +1,6 @@
 import { createUserSessions, invalidateUserSessions } from "@/utils/session";
 import { BadRequestException, UnauthorizedException } from "@/utils/error";
+import { session_cookie_name } from "@/utils/constants";
 import { loginUserDTO } from "../dtos";
 import { prisma } from "@/db";
 
@@ -43,7 +44,7 @@ export default new Elysia().post(
       if (!session) return;
 
       // New Cookie Creation
-      cookie.session.set({
+      cookie[session_cookie_name].set({
         secure: Bun.env.NODE_ENV !== "production",
         maxAge: session.expires_at,
         value: session.id,
