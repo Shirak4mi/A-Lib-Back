@@ -34,6 +34,7 @@ export default new Elysia().post(
         data: {
           password: await Bun.password.hash(password_salt + body.password, { algorithm: "argon2d" }),
           Tokens: { create: { Type: { connect: { id: 1 } }, hashed_token, expires_at } },
+          user_pictures: isFileSaved ? JSON.stringify(isFileSaved) : undefined,
           Document_Type: { connect: { id: parseInt(body.document_type_id) } },
           User_Type: { connect: { id: parseInt(body.account_type_id) } },
           birth_date: commonBDR(body.birth_date ?? "01/01/1777"),
