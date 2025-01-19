@@ -5,6 +5,7 @@ export const createUserDTO = t.Object({
   first_name: t.String({ minLength: 1 }),
   last_name: t.String({ minLength: 1 }),
   phone_number: t.String({ minLength: 1 }),
+  is_bookable: t.Boolean({ default: false }),
   address: t.String({ minLength: 1 }),
   document_type_id: t.String({ minLength: 1, default: 1 }),
   account_type_id: t.String({ minLength: 1, default: 1 }),

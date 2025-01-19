@@ -42,6 +42,7 @@ export default new Elysia().post(
           phone_number: body.phone_number,
           Status: { connect: { id: 1 } },
           document_id: body.document_id,
+          is_bookable: body.is_bookable,
           first_name: body.first_name,
           last_name: body.last_name,
           address: body.address,
