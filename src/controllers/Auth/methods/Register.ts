@@ -38,7 +38,6 @@ export default new Elysia().post(
           Document_Type: { connect: { id: parseInt(body.document_type_id) } },
           User_Type: { connect: { id: parseInt(body.account_type_id) } },
           birth_date: commonBDR(body.birth_date ?? "01/01/1777"),
-          username: body.email.split("@")[0],
           phone_number: body.phone_number,
           Status: { connect: { id: 1 } },
           document_id: body.document_id,
@@ -48,6 +47,7 @@ export default new Elysia().post(
           address: body.address,
           email: body.email,
           password_salt,
+          username,
         },
         select: {
           verified_email: true,
