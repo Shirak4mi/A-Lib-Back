@@ -24,10 +24,10 @@ export default new Elysia().post(
 
       const updateUser = await prisma.user.update({
         data: {
-          password_salt,
-          Tokens: { delete: { id } },
-          Status: { connect: { id: 2 } },
           password: await Bun.password.hash(password_salt + password, { algorithm: "argon2d" }),
+          Status: { connect: { id: 2 } },
+          Tokens: { delete: { id } },
+          password_salt,
         },
         select: { email: true },
         where: { id: user_id },
