@@ -1,5 +1,6 @@
 import { commonBDR, generateDate, generateRandomSalt, generateToken } from "@/utils/functions";
 import { ConflictException, InternalServerErrorException } from "@/utils/error";
+import { saveUserProfilePicture } from "@/utils/file_management";
 import { sendWelcomeMail } from "@/utils/mail";
 import { createUserDTO } from "../dtos";
 import { prisma } from "@/db";
@@ -23,16 +24,19 @@ export default new Elysia().post(
       if (isNotUniqueUser) throw new ConflictException("User already Exists!");
 
       const password_salt = generateRandomSalt();
+      const username = body.email.split("@")[0];
       const expires_at = generateDate(2, "h");
       const hashed_token = generateToken();
+
+      const isFileSaved = await saveUserProfilePicture(body.profile_picture, `public/${username}`);
 
       const nUser = await prisma.user.create({
         data: {
           password: await Bun.password.hash(password_salt + body.password, { algorithm: "argon2d" }),
           Tokens: { create: { Type: { connect: { id: 1 } }, hashed_token, expires_at } },
-          Document_Type: { connect: { id: body.document_type_id } },
+          Document_Type: { connect: { id: parseInt(body.document_type_id) } },
+          User_Type: { connect: { id: parseInt(body.account_type_id) } },
           birth_date: commonBDR(body.birth_date ?? "01/01/1777"),
-          User_Type: { connect: { id: body.account_type_id } },
           username: body.email.split("@")[0],
           phone_number: body.phone_number,
           Status: { connect: { id: 1 } },
