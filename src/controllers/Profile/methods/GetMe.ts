@@ -7,6 +7,14 @@ export default new Elysia().get(
   "Me",
   async ({ cookie: { session } }) => {
     try {
+      
+
+
+
+
+
+
+
       return await prisma.session.findFirst({
         where: { id: session.value },
         select: {
@@ -16,11 +24,11 @@ export default new Elysia().get(
               last_name: true,
               username: true,
               email: true,
-              verified_email: true,
-              document_id: true,
-              phone_number: true,
               address: true,
               birth_date: true,
+              document_id: true,
+              phone_number: true,
+              verified_email: true,
               Status: { select: { name: true } },
               User_Type: { select: { name: true } },
               Document_Type: { select: { name: true } },
