@@ -1,3 +1,4 @@
+import { staticPlugin } from "@elysiajs/static";
 import { app_port } from "./utils/constants";
 import { swagger } from "@elysiajs/swagger";
 import { helmet } from "elysia-helmet";
@@ -9,6 +10,7 @@ const helmetExec = helmet({ contentSecurityPolicy: false, crossOriginResourcePol
 new Elysia({ name: "E-Tickets API", strictPath: true, precompile: true })
   .use(swagger({ theme: "Dark", version: "0.1", exclude: ["/swagger", "/swagger/json"] }))
   .get("ping", () => "pong", { tags: ["Test"] })
+  .use(staticPlugin({assets:"/"}))
   .use(helmetExec)
   .use(routes)
   .listen(app_port, ({ url }) => console.log(`🦊 Elisya is Running on ${url}`));
