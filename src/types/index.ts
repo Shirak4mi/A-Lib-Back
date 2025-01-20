@@ -39,3 +39,8 @@ export type TUR = {
   username: string;
   verified_email: boolean | null;
 };
+
+export type TSavedFileDataSchema = null | {
+  compressedFilePath: string;
+  thumbnailFilePath: string;
+};
