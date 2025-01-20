@@ -1,4 +1,6 @@
 import { cleanFilePath, isValidDirectory } from "./functions";
+import { unlink } from "node:fs/promises";
+
 import sharp from "sharp";
 
 import type { TSavedFileDataSchema } from "@/types";
@@ -23,7 +25,7 @@ export async function saveUserProfilePicture(file?: File, filePath?: string): Pr
   await Bun.write(actualFilePath, file);
   await Bun.write(compressedFilePath, await sharp(actualFilePath).webp({ quality: 75, lossless: true }).end().toArray());
   await Bun.write(thumbnailFilePath, await sharp(compressedFilePath).resize(200, 200).end().toArray());
-  await Bun.file(actualFilePath).unlink();
+  await unlink(actualFilePath);
 
   return { compressedFilePath, thumbnailFilePath };
 }

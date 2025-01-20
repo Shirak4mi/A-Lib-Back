@@ -1,4 +1,4 @@
-import { readdir } from "node:fs/promises";
+import { readdir, unlink } from "node:fs/promises";
 
 export async function isValidDirectory(dirPath?: string): Promise<Array<string>> {
   if (!dirPath) return [];
@@ -10,5 +10,5 @@ export async function isValidDirectory(dirPath?: string): Promise<Array<string>>
 }
 
 export async function cleanFilePath(filesOnDir: Array<string>): Promise<Array<void>> {
-  return await Promise.all(filesOnDir.map(async (file) => await Bun.file(file, { endings: "transparent" }).unlink()));
+  return await Promise.all(filesOnDir.map(async (file) => await unlink(file)));
 }
