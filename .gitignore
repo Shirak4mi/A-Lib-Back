@@ -31,6 +31,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Custom Storage
+/storage
+/public/*
+!/public/.gitkeep
+
 **/*.trace
 **/*.zip
 **/*.tar.gz
