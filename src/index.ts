@@ -1,3 +1,4 @@
+import { app_port } from "./utils/constants";
 import { swagger } from "@elysiajs/swagger";
 import { helmet } from "elysia-helmet";
 import { routes } from "@/controllers";
@@ -10,4 +11,4 @@ new Elysia({ name: "E-Tickets API", strictPath: true, precompile: true })
   .get("ping", () => "pong", { tags: ["Test"] })
   .use(helmetExec)
   .use(routes)
-  .listen(Bun.env.PORT ?? 8080, ({ url }) => console.log(`🦊 Elisya is Running on ${url}`));
+  .listen(app_port, ({ url }) => console.log(`🦊 Elisya is Running on ${url}`));
