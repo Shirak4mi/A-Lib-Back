@@ -164,6 +164,7 @@ model Business {
   email             String               @unique @db.VarChar(255)
   open_from         DateTime             @db.Time
   open_to           DateTime             @db.Time
+  pictures          Json?                @db.JsonB
   // Reg fields
   owner_id          Int                  @db.SmallInt
   bussiness_type_id Int                  @db.SmallInt
