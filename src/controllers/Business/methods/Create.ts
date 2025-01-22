@@ -32,31 +32,29 @@ export default new Elysia().post(
 
       const pictures = await saveBusinessMainPictures(data.name, business_pictures);
 
-      console.log({ pictures });
-
-      // const createBussiness = await prisma.business.create({
-      //   data: {
-      //     open_to: new Date("2019-01-16 " + open_to),
-      //     open_from: new Date("2019-01-16 " + open_from),
-      //     Owner: { connect: { id: parseInt(owner_id) } },
-      //     pictures: pictures ? JSON.stringify(pictures) : undefined,
-      //     Bussiness_Type: { connect: { id: parseInt(bussiness_type) } },
-      //     Services: { connect: (bussiness_employees ?? "").split(",").map((x) => ({ id: parseInt(x) })) },
-      //     Employees: { connect: (business_services ?? "").split(",").map((x) => ({ id: parseInt(x) })) },
-      //     ...data,
-      //   },
-      //   select: {
-      //     name: true,
-      //     email: true,
-      //     address: true,
-      //     description: true,
-      //     phone_number: true,
-      //     open_to: true,
-      //     open_from: true,
-      //     Owner: { select: { email: true } },
-      //     Bussiness_Type: { select: { name: true } },
-      //   },
-      // });
+      const createBussiness = await prisma.business.create({
+        data: {
+          open_to: new Date("2019-01-16 " + open_to),
+          open_from: new Date("2019-01-16 " + open_from),
+          Owner: { connect: { id: parseInt(owner_id) } },
+          pictures: pictures ? JSON.stringify(pictures) : undefined,
+          Bussiness_Type: { connect: { id: parseInt(bussiness_type) } },
+          Services: { connect: (bussiness_employees ?? "").split(",").map((x) => ({ id: parseInt(x) })) },
+          Employees: { connect: (business_services ?? "").split(",").map((x) => ({ id: parseInt(x) })) },
+          ...data,
+        },
+        select: {
+          name: true,
+          email: true,
+          address: true,
+          description: true,
+          phone_number: true,
+          open_to: true,
+          open_from: true,
+          Owner: { select: { email: true } },
+          Bussiness_Type: { select: { name: true } },
+        },
+      });
 
       // if (!createBussiness) throw new InternalServerErrorException("Error creating Bussiness");
 
