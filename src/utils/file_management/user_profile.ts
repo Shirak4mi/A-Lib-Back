@@ -1,4 +1,4 @@
-import { cleanFilePathNFolder, cleanFilePath, isValidDirectory } from "./functions";
+import { cleanFilePathNFolder, isValidDirectory } from "./functions";
 import { unlink } from "node:fs/promises";
 
 import sharp from "sharp";

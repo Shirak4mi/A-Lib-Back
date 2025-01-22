@@ -23,9 +23,10 @@ export default new Elysia().patch(
       // Sugary Destructs
       const { User } = isValidSession;
       const { birth_date, document_type_id, password } = body;
-      const password_salt = generateRandomSalt();
 
+      // Constants
       const username = body.email ? body.email.split("@")[0] : User.username;
+      const password_salt = generateRandomSalt();
 
       const isFileSaved = await updateUserProfilePicture(username, User.username, body.profile_picture);
 
