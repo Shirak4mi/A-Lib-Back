@@ -1,4 +1,5 @@
 import { InternalServerErrorException, UnauthorizedException } from "@/utils/error";
+import { saveBusinessMainPictures } from "@/utils/file_management";
 import { CreateBussinessDTO } from "../dtos";
 import { prisma } from "@/db";
 
@@ -17,20 +18,32 @@ export default new Elysia().post(
 
       if (isUserOwnerType.User_Type.id !== 2) throw new UnauthorizedException("The provided user is not an Owner!");
 
-      console.log(body);
+      // Sugary Destruction
+      const {
+        bussiness_employees,
+        business_services,
+        business_pictures,
+        bussiness_type,
+        open_from,
+        owner_id,
+        open_to,
+        ...data
+      } = body;
+
+      const pictures = await saveBusinessMainPictures(data.name, business_pictures);
+
+      console.log({ pictures });
 
       // const createBussiness = await prisma.business.create({
       //   data: {
-      //     name: body.name,
-      //     email: body.email,
-      //     address: body.address,
-      //     description: body.description,
-      //     phone_number: body.phone_number,
-      //     Owner: { connect: { id: body.owner_id } },
-      //     open_to: new Date("2019-01-16 " + body.open_to),
-      //     open_from: new Date("2019-01-16 " + body.open_from),
-      //     Bussiness_Type: { connect: { id: body.bussiness_type } },
-      //     Services: { connect: [] },
+      //     open_to: new Date("2019-01-16 " + open_to),
+      //     open_from: new Date("2019-01-16 " + open_from),
+      //     Owner: { connect: { id: parseInt(owner_id) } },
+      //     pictures: pictures ? JSON.stringify(pictures) : undefined,
+      //     Bussiness_Type: { connect: { id: parseInt(bussiness_type) } },
+      //     Services: { connect: (bussiness_employees ?? "").split(",").map((x) => ({ id: parseInt(x) })) },
+      //     Employees: { connect: (business_services ?? "").split(",").map((x) => ({ id: parseInt(x) })) },
+      //     ...data,
       //   },
       //   select: {
       //     name: true,
@@ -47,7 +60,7 @@ export default new Elysia().post(
 
       // if (!createBussiness) throw new InternalServerErrorException("Error creating Bussiness");
 
-      return {};
+      return { createBussiness: "" };
     } catch (e) {
       throw e;
     }

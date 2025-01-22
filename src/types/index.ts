@@ -44,3 +44,8 @@ export type TSavedFileDataObj = null | {
   compressedFilePath: string;
   thumbnailFilePath: string;
 };
+
+export type TSavedFileDataArray = null | Array<{
+  compressedFilePath: string;
+  thumbnailFilePath: string;
+}>;
