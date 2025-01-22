@@ -1,4 +1,4 @@
-import { cleanFilePath, isValidDirectory } from "./functions";
+import { cleanFilePathNFolder, cleanFilePath, isValidDirectory } from "./functions";
 import { unlink } from "node:fs/promises";
 
 import sharp from "sharp";
@@ -8,9 +8,6 @@ import type { TSavedFileDataObj } from "@/types";
 export async function saveUserProfilePicture(username: string, file?: File): Promise<TSavedFileDataObj> {
   if (!file) return null;
   const fp = `public/${username}`;
-
-  const workToDir = await isValidDirectory(fp.concat("/"));
-  if (workToDir.length) await cleanFilePath(workToDir);
 
   const actualFilePath = fp.concat(`/${file.name}`);
   const compressedFilePath = fp.concat(`/${username}.webp`);
@@ -30,9 +27,10 @@ export async function saveUserProfilePicture(username: string, file?: File): Pro
 export async function updateUserProfilePicture(nuname: string, ouname: string, file?: File): Promise<TSavedFileDataObj> {
   if (!file) return null;
   const fp = `public/${nuname}`;
+  const ofp = `public/${ouname}/`;
 
-  const workToDir = await isValidDirectory(`public/${ouname}/`);
-  if (workToDir.length) await cleanFilePath(workToDir);
+  const workToDir = await isValidDirectory(ofp);
+  if (workToDir.length) await cleanFilePathNFolder(ofp, workToDir);
 
   const actualFilePath = fp.concat(`/$temporalPic`);
   const compressedFilePath = fp.concat(`/${nuname}.webp`);
