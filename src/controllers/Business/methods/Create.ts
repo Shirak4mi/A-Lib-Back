@@ -53,21 +53,3 @@ export default new Elysia().post(
   { body: CreateBussinessDTO }
 );
 
-/**
- * 
- * 
-
-{
-  "name": "Papotico barbersho",
-  "description": "Tu real barberia",
-  "address": "#mi casa",
-  "phone_number": "8099919999",
-  "email": "papotico_barbersho@gmail.com",
-  "open_from": "8:30:00",
-  "open_to": "17:30:00",
-  "bussiness_type": 1,
-  "owner_id": 1
-}
- * 
- * 
- */
