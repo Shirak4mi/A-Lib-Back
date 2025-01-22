@@ -77,15 +77,14 @@ model OAuthAccount {
 }
 
 model Service {
-  id          Int       @id @default(autoincrement()) @db.SmallInt
-  name        String    @db.VarChar(255)
-  description String?   @db.Text
-  price       Float     @db.DoublePrecision
-  created_at  DateTime  @default(now()) @db.Date
-  updated_at  DateTime? @updatedAt @db.Date
+  id          Int                 @id @default(autoincrement()) @db.SmallInt
+  name        String              @db.VarChar(255)
+  description String?             @db.Text
+  price       Float               @db.DoublePrecision
+  created_at  DateTime            @default(now()) @db.Date
+  updated_at  DateTime?           @updatedAt @db.Date
   Bookings    Booking[]
-  Business    Business? @relation(fields: [businessId], references: [id])
-  businessId  Int?      @db.SmallInt
+  Business    Business_Services[]
 }
 
 model Schedule {
@@ -105,6 +104,7 @@ model Booking {
   date        DateTime       @db.Date
   start_time  DateTime       @db.Time
   end_time    DateTime       @db.Time
+  // Reg Fields
   user_id     Int            @db.SmallInt // The user who makes the booking
   bookable_id Int            @db.SmallInt // The user who is being booked  
   service_id  Int            @db.SmallInt
@@ -112,6 +112,7 @@ model Booking {
   business_id Int            @db.SmallInt
   created_at  DateTime       @default(now()) @db.Date
   updated_at  DateTime?      @updatedAt @db.Date
+  // Relations
   Booked_By   User           @relation("Booked_By", fields: [user_id], references: [id])
   Booked_From User           @relation("Booked_From", fields: [bookable_id], references: [id])
   Status      Booking_Status @relation(fields: [status_id], references: [id])
@@ -174,9 +175,9 @@ model Business {
   Bussiness_Type    Business_type        @relation(fields: [bussiness_type_id], references: [id])
   Owner             User                 @relation("Owner", fields: [owner_id], references: [id])
   Queue             Queue[]
-  Services          Service[]
   Bookings          Booking[]
   Employees         Business_employees[]
+  Services          Business_Services[]
 }
 
 model Business_employees {
@@ -187,6 +188,14 @@ model Business_employees {
   updated_at  DateTime? @updatedAt @db.Date
   Business    Business  @relation(fields: [business_id], references: [id])
   Employee    User      @relation(fields: [employee_id], references: [id])
+}
+
+model Business_Services {
+  id          Int      @id @default(autoincrement()) @db.Integer
+  business_id Int      @db.Integer
+  service_id  Int      @db.Integer
+  Business    Business @relation(fields: [business_id], references: [id])
+  Service     Service  @relation(fields: [service_id], references: [id])
 }
 
 model Feedback {
