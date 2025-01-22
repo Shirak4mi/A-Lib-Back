@@ -1,6 +1,6 @@
 import { InternalServerErrorException, UnauthorizedException } from "@/utils/error";
 import { commonBDR, generateRandomSalt } from "@/utils/functions";
-import { saveUserProfilePicture } from "@/utils/file_management";
+import { updateUserProfilePicture } from "@/utils/file_management";
 import { session_cookie_name } from "@/utils/constants";
 import { sessionCookie } from "@/common/DTO";
 import { UpdateProfileDTO } from "../dtos";
@@ -25,7 +25,9 @@ export default new Elysia().patch(
       const { birth_date, document_type_id, password } = body;
       const password_salt = generateRandomSalt();
 
-      const isFileSaved = await saveUserProfilePicture(User.username, body.profile_picture, `public/${User.username}`);
+      const username = body.email ? body.email.split("@")[0] : User.username;
+
+      const isFileSaved = await updateUserProfilePicture(username, User.username, body.profile_picture);
 
       const uptd_user = await prisma.user.update({
         where: { id: User.id },
@@ -40,10 +42,14 @@ export default new Elysia().patch(
           document_id: body.document_id,
           first_name: body.first_name,
           last_name: body.last_name,
-          username: body.username,
           email: body.email,
+          username,
         },
-        select: {},
+        select: {
+          verified_email: true,
+          username: true,
+          email: true,
+        },
       });
 
       if (!uptd_user) throw new InternalServerErrorException("Could not create user");

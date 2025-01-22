@@ -1,3 +1,1 @@
-export { saveUserProfilePicture } from "./user_profile.ts";
-
-
+export { saveUserProfilePicture, updateUserProfilePicture } from "./user_profile.ts";
