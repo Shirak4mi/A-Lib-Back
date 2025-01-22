@@ -7,7 +7,7 @@ import type { TSavedFileDataObj } from "@/types";
 
 export async function saveUserProfilePicture(username: string, file?: File): Promise<TSavedFileDataObj> {
   if (!file) return null;
-  const fp = `public/${username}`;
+  const fp = `public/user/${username}`;
 
   const actualFilePath = fp.concat(`/${file.name}`);
   const compressedFilePath = fp.concat(`/${username}.webp`);
@@ -26,8 +26,8 @@ export async function saveUserProfilePicture(username: string, file?: File): Pro
 
 export async function updateUserProfilePicture(nuname: string, ouname: string, file?: File): Promise<TSavedFileDataObj> {
   if (!file) return null;
-  const fp = `public/${nuname}`;
-  const ofp = `public/${ouname}/`;
+  const fp = `public/user/${nuname}`;
+  const ofp = `public/user/${ouname}/`;
 
   const workToDir = await isValidDirectory(ofp);
   if (workToDir.length) await cleanFilePathNFolder(ofp, workToDir);
