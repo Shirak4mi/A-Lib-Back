@@ -53,7 +53,7 @@ async function main() {
       skipDuplicates: true,
     });
 
-    const services = await prisma.service.create({ data: { name: "Service Test", price: 750.7 } });
+    const services = await prisma.service.create({ data: { name: "Service Test", base_price: 750.7 } });
 
     console.log({
       documet_types,
@@ -65,7 +65,6 @@ async function main() {
       business_type,
       services,
     });
-    
   } catch (e) {
     console.error(e);
   }
