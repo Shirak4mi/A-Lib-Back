@@ -15,7 +15,7 @@ export default new Elysia().post(
 
       if (!isUserOwnerType) throw new UnauthorizedException("The provided user does not exists!");
 
-      if (isUserOwnerType.User_Type.id !== 2) throw new UnauthorizedException("The provided user does not an Owner!");
+      if (isUserOwnerType.User_Type.id !== 2) throw new UnauthorizedException("The provided user is not an Owner!");
 
       const createBussiness = await prisma.business.create({
         data: {
@@ -28,6 +28,7 @@ export default new Elysia().post(
           open_to: new Date("2019-01-16 " + body.open_to),
           open_from: new Date("2019-01-16 " + body.open_from),
           Bussiness_Type: { connect: { id: body.bussiness_type } },
+          
         },
         select: {
           name: true,
