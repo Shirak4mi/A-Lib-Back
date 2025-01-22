@@ -40,7 +40,7 @@ export type TUR = {
   verified_email: boolean | null;
 };
 
-export type TSavedFileDataSchema = null | {
+export type TSavedFileDataObj = null | {
   compressedFilePath: string;
   thumbnailFilePath: string;
 };

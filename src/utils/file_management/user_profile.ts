@@ -3,21 +3,18 @@ import { unlink } from "node:fs/promises";
 
 import sharp from "sharp";
 
-import type { TSavedFileDataSchema } from "@/types";
+import type { TSavedFileDataObj } from "@/types";
 
-export async function saveUserProfilePicture(file?: File, filePath?: string): Promise<TSavedFileDataSchema> {
+export async function saveUserProfilePicture(username: string, file?: File, fp?: string): Promise<TSavedFileDataObj> {
   if (!file) return null;
-  filePath = !filePath ? "/public/" : filePath;
+  fp = !fp ? "/public/" : fp;
 
-  const dividedName = file.name.split(".");
-  const filename = dividedName.slice(0, dividedName.length - 1).join(".");
-  const workToDir = await isValidDirectory(filePath.concat("/"));
-
+  const workToDir = await isValidDirectory(fp.concat("/"));
   if (workToDir.length) await cleanFilePath(workToDir);
 
-  const actualFilePath = filePath.concat(`/${file.name}`);
-  const compressedFilePath = filePath.concat(`/${filename}.webp`);
-  const thumbnailFilePath = filePath.concat(`/${filename}-thumbnail.webp`);
+  const actualFilePath = fp.concat(`/${file.name}`);
+  const compressedFilePath = fp.concat(`/${username}.webp`);
+  const thumbnailFilePath = fp.concat(`/${username}-thumbnail.webp`);
 
   // Deactivate Sharp Cache for file Async Management
   sharp.cache(false);

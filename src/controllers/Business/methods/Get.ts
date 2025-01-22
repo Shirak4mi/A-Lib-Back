@@ -1,7 +1,7 @@
 import { AddMetaData, getCurrentCursorOffSet } from "@/utils/functions.ts";
 import { NotFoundException } from "@/utils/error/index.ts";
 import { FilterBussinessDTO } from "../dtos/index.ts";
-import { prisma } from "@/db/index.ts";
+import { prisma } from "@/db";
 
 import { Elysia } from "elysia";
 

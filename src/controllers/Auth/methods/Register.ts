@@ -28,7 +28,7 @@ export default new Elysia().post(
       const expires_at = generateDate(2, "h");
       const hashed_token = generateToken();
 
-      const isFileSaved = await saveUserProfilePicture(body.profile_picture, `public/${username}`);
+      const isFileSaved = await saveUserProfilePicture(username, body.profile_picture, `public/${username}`);
 
       const nUser = await prisma.user.create({
         data: {

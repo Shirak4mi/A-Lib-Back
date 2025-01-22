@@ -23,8 +23,9 @@ export default new Elysia().patch(
       // Sugary Destructs
       const { User } = isValidSession;
       const { birth_date, document_type_id, password } = body;
-      const isFileSaved = await saveUserProfilePicture(body.profile_picture, `public/${User.username}`);
       const password_salt = generateRandomSalt();
+
+      const isFileSaved = await saveUserProfilePicture(User.username, body.profile_picture, `public/${User.username}`);
 
       const uptd_user = await prisma.user.update({
         where: { id: User.id },
