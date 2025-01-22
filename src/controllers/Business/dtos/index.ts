@@ -10,9 +10,8 @@ export const CreateBussinessDTO = t.Object({
   open_to: t.String({ minLength: 1 }),
   bussiness_type: t.Number({ minimum: 1 }),
   owner_id: t.Number({ minimum: 1 }),
-  
-
-
+  business_services: t.Optional(t.Array(t.String())),
+  bussiness_employees: t.Optional(t.Array(t.String())),
 });
 
 export type TCreateBussinessDTO = Static<typeof CreateBussinessDTO>;

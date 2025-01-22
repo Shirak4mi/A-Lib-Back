@@ -28,7 +28,7 @@ export default new Elysia().post(
           open_to: new Date("2019-01-16 " + body.open_to),
           open_from: new Date("2019-01-16 " + body.open_from),
           Bussiness_Type: { connect: { id: body.bussiness_type } },
-          
+          Services: { connect: [] },
         },
         select: {
           name: true,
@@ -52,4 +52,3 @@ export default new Elysia().post(
   },
   { body: CreateBussinessDTO }
 );
-
