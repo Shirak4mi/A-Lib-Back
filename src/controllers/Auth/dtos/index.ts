@@ -12,7 +12,7 @@ export const createUserDTO = t.Object({
   document_id: t.String({ minLength: 1 }),
   password: t.String({ minLength: 1 }),
   email: t.String({ minLength: 1, format: "email" }),
-  profile_picture: t.Optional(t.File({ maxItems: 1, type: "image/png" })),
+  profile_picture: t.Optional(t.File({ maxItems: 1, type: "image" })),
 });
 
 export type TCreateUserDTO = Static<typeof createUserDTO>;

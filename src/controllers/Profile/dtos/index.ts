@@ -16,7 +16,7 @@ export const UpdateProfileDTO = t.Object({
   phone_number: t.Optional(t.String()),
   document_id: t.Optional(t.String()),
   document_type_id: t.Optional(t.Union([t.String(), t.Number()])),
-  profile_picture: t.Optional(t.File({ maxItems: 1, type: "image/png" })),
+  profile_picture: t.Optional(t.File({ maxItems: 1, type: "image" })),
 });
 
 export type TUpdateProfileDTO = Static<typeof UpdateProfileDTO>;

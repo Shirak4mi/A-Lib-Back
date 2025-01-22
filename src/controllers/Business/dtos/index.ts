@@ -8,10 +8,11 @@ export const CreateBussinessDTO = t.Object({
   email: t.String({ minLength: 1, format: "email" }),
   open_from: t.String({ minLength: 1 }),
   open_to: t.String({ minLength: 1 }),
-  bussiness_type: t.Number({ minimum: 1 }),
-  owner_id: t.Number({ minimum: 1 }),
-  business_services: t.Optional(t.Array(t.String())),
-  bussiness_employees: t.Optional(t.Array(t.String())),
+  bussiness_type: t.String({ minimum: 1 }),
+  owner_id: t.String({ minimum: 1 }),
+  business_services: t.Optional(t.String()),
+  bussiness_employees: t.Optional(t.String()),
+  business_pictures: t.Optional(t.Files({ maxItems: 10, type: "image" })),
 });
 
 export type TCreateBussinessDTO = Static<typeof CreateBussinessDTO>;

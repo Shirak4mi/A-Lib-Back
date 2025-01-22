@@ -9,7 +9,7 @@ export default new Elysia().post(
   async ({ body }) => {
     try {
       const isUserOwnerType = await prisma.user.findFirst({
-        where: { id: body.owner_id },
+        where: { id: parseInt(body.owner_id) },
         select: { User_Type: { select: { id: true } } },
       });
 
@@ -17,35 +17,37 @@ export default new Elysia().post(
 
       if (isUserOwnerType.User_Type.id !== 2) throw new UnauthorizedException("The provided user is not an Owner!");
 
-      const createBussiness = await prisma.business.create({
-        data: {
-          name: body.name,
-          email: body.email,
-          address: body.address,
-          description: body.description,
-          phone_number: body.phone_number,
-          Owner: { connect: { id: body.owner_id } },
-          open_to: new Date("2019-01-16 " + body.open_to),
-          open_from: new Date("2019-01-16 " + body.open_from),
-          Bussiness_Type: { connect: { id: body.bussiness_type } },
-          Services: { connect: [] },
-        },
-        select: {
-          name: true,
-          email: true,
-          address: true,
-          description: true,
-          phone_number: true,
-          open_to: true,
-          open_from: true,
-          Owner: { select: { email: true } },
-          Bussiness_Type: { select: { name: true } },
-        },
-      });
+      console.log(body);
 
-      if (!createBussiness) throw new InternalServerErrorException("Error creating Bussiness");
+      // const createBussiness = await prisma.business.create({
+      //   data: {
+      //     name: body.name,
+      //     email: body.email,
+      //     address: body.address,
+      //     description: body.description,
+      //     phone_number: body.phone_number,
+      //     Owner: { connect: { id: body.owner_id } },
+      //     open_to: new Date("2019-01-16 " + body.open_to),
+      //     open_from: new Date("2019-01-16 " + body.open_from),
+      //     Bussiness_Type: { connect: { id: body.bussiness_type } },
+      //     Services: { connect: [] },
+      //   },
+      //   select: {
+      //     name: true,
+      //     email: true,
+      //     address: true,
+      //     description: true,
+      //     phone_number: true,
+      //     open_to: true,
+      //     open_from: true,
+      //     Owner: { select: { email: true } },
+      //     Bussiness_Type: { select: { name: true } },
+      //   },
+      // });
 
-      return createBussiness;
+      // if (!createBussiness) throw new InternalServerErrorException("Error creating Bussiness");
+
+      return {};
     } catch (e) {
       throw e;
     }
