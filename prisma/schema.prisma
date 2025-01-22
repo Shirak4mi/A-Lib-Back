@@ -80,7 +80,7 @@ model Service {
   id          Int                 @id @default(autoincrement()) @db.SmallInt
   name        String              @db.VarChar(255)
   description String?             @db.Text
-  price       Float               @db.DoublePrecision
+  price       Decimal             @db.Money
   created_at  DateTime            @default(now()) @db.Date
   updated_at  DateTime?           @updatedAt @db.Date
   Bookings    Booking[]
@@ -192,6 +192,7 @@ model Business_employees {
 
 model Business_Services {
   id          Int      @id @default(autoincrement()) @db.Integer
+  price       Decimal  @db.Money
   business_id Int      @db.Integer
   service_id  Int      @db.Integer
   Business    Business @relation(fields: [business_id], references: [id])
