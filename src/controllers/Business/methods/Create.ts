@@ -65,3 +65,5 @@ export default new Elysia().post(
   },
   { body: CreateBussinessDTO }
 );
+
+// https://stackoverflow.com/questions/75580284/how-to-model-fixed-size-weekly-schedule-with-prisma-and-postgresql
