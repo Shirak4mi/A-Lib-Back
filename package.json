@@ -11,7 +11,7 @@
     "@elysiajs/static": "^1.2.0",
     "@elysiajs/swagger": "^1.2.0",
     "@prisma/client": "6.2.1",
-    "arctic": "^3.2.0",
+    "arctic": "^3.2.1",
     "elysia": "latest",
     "elysia-helmet": "^2.0.0",
     "logestic": "^1.2.4",
