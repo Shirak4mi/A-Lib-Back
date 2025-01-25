@@ -34,14 +34,14 @@ export default new Elysia().post(
 
       const createBussiness = await prisma.business.create({
         data: {
+          ...data,
           open_to: new Date("2019-01-16 " + open_to),
           open_from: new Date("2019-01-16 " + open_from),
           Owner: { connect: { id: parseInt(owner_id) } },
           pictures: pictures ? JSON.stringify(pictures) : undefined,
           Bussiness_Type: { connect: { id: parseInt(bussiness_type) } },
-          Services: { connect: (bussiness_employees ?? "").split(",").map((x) => ({ id: parseInt(x) })) },
           Employees: { connect: (business_services ?? "").split(",").map((x) => ({ id: parseInt(x) })) },
-          ...data,
+          Services: { connect: (bussiness_employees ?? "").split(",").map((x) => ({ id: parseInt(x) })) },
         },
         select: {
           name: true,
@@ -55,6 +55,8 @@ export default new Elysia().post(
           Bussiness_Type: { select: { name: true } },
         },
       });
+
+      console.log({ createBussiness });
 
       // if (!createBussiness) throw new InternalServerErrorException("Error creating Bussiness");
 
