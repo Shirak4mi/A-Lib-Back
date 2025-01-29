@@ -212,13 +212,27 @@ model Feedback {
   To_user      User      @relation("FeedbackTo", fields: [to_user_id], references: [id])
 }
 
-model ShortLink {
+model Short_Links {
   id           String   @id @default(cuid()) @db.VarChar(70)
   original_url String   @db.Text
   short_code   String   @unique @db.VarChar(20)
   clicks       Int      @default(0) @db.Integer
   created_at   DateTime @default(now()) @db.Date
   updated_at   DateTime @updatedAt @db.Date
+
+  @@index([short_code])
+}
+
+model Short_Temporal_Links {
+  id           String    @id @default(cuid()) @db.VarChar(70)
+  original_url String    @db.Text
+  short_code   String    @unique @db.VarChar(20)
+  // Reg fields
+  link_type_id Int       @db.SmallInt
+  expires_at   Int       @db.Integer
+  created_at   DateTime  @default(now()) @db.Date
+  // Relations
+  Type         Link_type @relation(fields: [link_type_id], references: [id])
 
   @@index([short_code])
 }
@@ -279,4 +293,12 @@ model Business_type {
   created_at DateTime   @default(now()) @db.Date
   updated_at DateTime   @updatedAt @db.Date
   Business   Business[]
+}
+
+model Link_type {
+  id                   Int                    @id @default(autoincrement()) @db.SmallInt
+  name                 String                 @db.VarChar(60)
+  created_at           DateTime               @default(now()) @db.Date
+  updated_at           DateTime               @updatedAt @db.Date
+  Short_Temporal_Links Short_Temporal_Links[]
 }
