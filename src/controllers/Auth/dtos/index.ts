@@ -28,6 +28,10 @@ export const recoverUserDTO = t.Object({ email: t.String({ minLength: 1, format:
 
 export type TRecoverUserDTO = Static<typeof recoverUserDTO>;
 
+export const userMagikLinkDTO = t.Object({ email: t.String({ minLength: 1, format: "email" }) });
+
+export type TUserMagikLinkDTO = Static<typeof userMagikLinkDTO>;
+
 export const restorePasswordDTO = t.Object({ password: t.String({ minLength: 8 }) });
 
 export type TRestorePasswordDTO = Static<typeof restorePasswordDTO>;

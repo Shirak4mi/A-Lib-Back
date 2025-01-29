@@ -212,7 +212,7 @@ model Feedback {
   To_user      User      @relation("FeedbackTo", fields: [to_user_id], references: [id])
 }
 
-model Short_Links {
+model Short_links {
   id           String    @id @default(cuid()) @db.VarChar(70)
   original_url String    @db.Text
   short_code   String    @unique @db.VarChar(20)
@@ -227,7 +227,7 @@ model Short_Links {
   @@index([short_code])
 }
 
-model Short_Temporal_Links {
+model Temporal_short_links {
   id           String    @id @default(cuid()) @db.VarChar(70)
   original_url String    @db.Text
   short_code   String    @unique @db.VarChar(20)
@@ -304,6 +304,6 @@ model Link_type {
   name           String                 @db.VarChar(60)
   created_at     DateTime               @default(now()) @db.Date
   updated_at     DateTime               @updatedAt @db.Date
-  Links          Short_Links[]
-  Temporal_Links Short_Temporal_Links[]
+  Links          Short_links[]
+  Temporal_Links Temporal_short_links[]
 }
