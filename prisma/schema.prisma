@@ -212,6 +212,17 @@ model Feedback {
   To_user      User      @relation("FeedbackTo", fields: [to_user_id], references: [id])
 }
 
+model ShortLink {
+  id           String   @id @default(cuid()) @db.VarChar(70)
+  original_url String   @db.Text
+  short_code   String   @unique @db.VarChar(20)
+  clicks       Int      @default(0) @db.Integer
+  created_at   DateTime @default(now()) @db.Date
+  updated_at   DateTime @updatedAt @db.Date
+
+  @@index([short_code])
+}
+
 // Type models -> Regulatory models
 
 model Token_type {
