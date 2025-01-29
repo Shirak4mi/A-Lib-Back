@@ -300,10 +300,10 @@ model Business_type {
 }
 
 model Link_type {
-  id                   Int                    @id @default(autoincrement()) @db.SmallInt
-  name                 String                 @db.VarChar(60)
-  created_at           DateTime               @default(now()) @db.Date
-  updated_at           DateTime               @updatedAt @db.Date
-  Short_Temporal_Links Short_Temporal_Links[]
-  Short_Links          Short_Links[]
+  id             Int                    @id @default(autoincrement()) @db.SmallInt
+  name           String                 @db.VarChar(60)
+  created_at     DateTime               @default(now()) @db.Date
+  updated_at     DateTime               @updatedAt @db.Date
+  Links          Short_Links[]
+  Temporal_Links Short_Temporal_Links[]
 }
