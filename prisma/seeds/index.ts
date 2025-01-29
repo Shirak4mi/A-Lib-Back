@@ -55,6 +55,10 @@ async function main() {
 
     const services = await prisma.service.create({ data: { name: "Service Test", base_price: 750.7 } });
 
+    const link_types = await prisma.link_type.createMany({
+      data: [{ name: "Login" }, { name: "Share" }, { name: "Redirect" }],
+    });
+
     console.log({
       documet_types,
       user_status,
@@ -64,6 +68,7 @@ async function main() {
       user_types,
       business_type,
       services,
+      link_types,
     });
   } catch (e) {
     console.error(e);
