@@ -7,7 +7,7 @@ export default new Elysia().post(
   "ForgotPassword",
   async ({ body: { email } }) => {
     try {
-     const existingMagikLinks = await prisma.short_Temporal_Links
+     // const existingMagikLinks = await prisma.temporal_short_links.
 
 
 
