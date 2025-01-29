@@ -189,7 +189,7 @@ CREATE TABLE "Feedback" (
 );
 
 -- CreateTable
-CREATE TABLE "Short_Links" (
+CREATE TABLE "Short_links" (
     "id" VARCHAR(70) NOT NULL,
     "original_url" TEXT NOT NULL,
     "short_code" VARCHAR(20) NOT NULL,
@@ -198,11 +198,11 @@ CREATE TABLE "Short_Links" (
     "created_at" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATE NOT NULL,
 
-    CONSTRAINT "Short_Links_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Short_links_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Short_Temporal_Links" (
+CREATE TABLE "Temporal_short_links" (
     "id" VARCHAR(70) NOT NULL,
     "original_url" TEXT NOT NULL,
     "short_code" VARCHAR(20) NOT NULL,
@@ -210,7 +210,7 @@ CREATE TABLE "Short_Temporal_Links" (
     "expires_at" INTEGER NOT NULL,
     "created_at" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Short_Temporal_Links_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Temporal_short_links_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -312,16 +312,16 @@ CREATE UNIQUE INDEX "Business_phone_number_key" ON "Business"("phone_number");
 CREATE UNIQUE INDEX "Business_email_key" ON "Business"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Short_Links_short_code_key" ON "Short_Links"("short_code");
+CREATE UNIQUE INDEX "Short_links_short_code_key" ON "Short_links"("short_code");
 
 -- CreateIndex
-CREATE INDEX "Short_Links_short_code_idx" ON "Short_Links"("short_code");
+CREATE INDEX "Short_links_short_code_idx" ON "Short_links"("short_code");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Short_Temporal_Links_short_code_key" ON "Short_Temporal_Links"("short_code");
+CREATE UNIQUE INDEX "Temporal_short_links_short_code_key" ON "Temporal_short_links"("short_code");
 
 -- CreateIndex
-CREATE INDEX "Short_Temporal_Links_short_code_idx" ON "Short_Temporal_Links"("short_code");
+CREATE INDEX "Temporal_short_links_short_code_idx" ON "Temporal_short_links"("short_code");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_document_type_id_fkey" FOREIGN KEY ("document_type_id") REFERENCES "Document_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -402,7 +402,7 @@ ALTER TABLE "Feedback" ADD CONSTRAINT "Feedback_from_user_id_fkey" FOREIGN KEY (
 ALTER TABLE "Feedback" ADD CONSTRAINT "Feedback_to_user_id_fkey" FOREIGN KEY ("to_user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Short_Links" ADD CONSTRAINT "Short_Links_link_type_id_fkey" FOREIGN KEY ("link_type_id") REFERENCES "Link_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Short_links" ADD CONSTRAINT "Short_links_link_type_id_fkey" FOREIGN KEY ("link_type_id") REFERENCES "Link_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Short_Temporal_Links" ADD CONSTRAINT "Short_Temporal_Links_link_type_id_fkey" FOREIGN KEY ("link_type_id") REFERENCES "Link_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Temporal_short_links" ADD CONSTRAINT "Temporal_short_links_link_type_id_fkey" FOREIGN KEY ("link_type_id") REFERENCES "Link_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
