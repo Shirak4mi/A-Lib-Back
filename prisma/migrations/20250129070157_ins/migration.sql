@@ -189,6 +189,18 @@ CREATE TABLE "Feedback" (
 );
 
 -- CreateTable
+CREATE TABLE "ShortLink" (
+    "id" VARCHAR(70) NOT NULL,
+    "original_url" TEXT NOT NULL,
+    "short_code" VARCHAR(20) NOT NULL,
+    "clicks" INTEGER NOT NULL DEFAULT 0,
+    "created_at" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" DATE NOT NULL,
+
+    CONSTRAINT "ShortLink_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Token_type" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(255) NOT NULL,
@@ -275,6 +287,12 @@ CREATE UNIQUE INDEX "Business_phone_number_key" ON "Business"("phone_number");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Business_email_key" ON "Business"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ShortLink_short_code_key" ON "ShortLink"("short_code");
+
+-- CreateIndex
+CREATE INDEX "ShortLink_short_code_idx" ON "ShortLink"("short_code");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_document_type_id_fkey" FOREIGN KEY ("document_type_id") REFERENCES "Document_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
