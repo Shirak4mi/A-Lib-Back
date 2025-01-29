@@ -1,5 +1,6 @@
 import { type TimeSpanUnit, TimeSpan, createDate } from "oslo";
 import { alphabet, generateRandomString } from "oslo/crypto";
+import { commonCryptoChars } from "./constants";
 
 import type { MetaDataResponse } from "@/types";
 
@@ -72,20 +73,23 @@ export function filterMessage(error: string): string {
   } else return error;
 }
 
-/**
- * 
- * 
-  {
-    "address": "calle X uwehuiwfe",
-    "birth_date": "27/09/1999",
-    "first_name": "Jose",
-    "last_name": "Ynfante",
-    "phone_number": "8099919999",
-    "document_type_id": 1,
-    "account_type_id": 1,
-    "document_id": "402372991999",
-    "password": "admin1234",
-    "email": "yassett.ynfante@gmail.com"
+export function generateShortCode(length: number = 4): string {
+  const bytes = Buffer.allocUnsafe(length);
+  const mask = 2 ^ length;
+  let result = "";
+
+  for (let i = 0; i < length; i++) {
+    bytes[i] = (Math.random() * 256) | 0;
   }
- * 
- */
+  for (let i = 0; i < length; i++) result += commonCryptoChars[bytes[i] & mask];
+  return result;
+}
+
+export function generateShortCodeNonCrypto(length = 6): string {
+  const mask = 2 ^ length;
+  let result = "";
+  const rand = new Uint8Array(length);
+  crypto.getRandomValues(rand);
+  for (let i = 0; i < length; i++) result += commonCryptoChars[rand[i] & mask];
+  return result;
+}
