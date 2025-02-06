@@ -78,9 +78,8 @@ export function generateShortCode(length: number = 4): string {
   const mask = 2 ^ length;
   let result = "";
 
-  for (let i = 0; i < length; i++) {
-    bytes[i] = (Math.random() * 256) | 0;
-  }
+  for (let i = 0; i < length; i++) bytes[i] = (Math.random() * 256) | 0;
+
   for (let i = 0; i < length; i++) result += commonCryptoChars[bytes[i] & mask];
   return result;
 }
