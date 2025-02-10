@@ -206,6 +206,7 @@ CREATE TABLE "Temporal_short_links" (
     "id" VARCHAR(70) NOT NULL,
     "original_url" TEXT NOT NULL,
     "short_code" VARCHAR(20) NOT NULL,
+    "user_id" SMALLINT,
     "link_type_id" SMALLINT NOT NULL,
     "expires_at" INTEGER NOT NULL,
     "created_at" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -406,3 +407,6 @@ ALTER TABLE "Short_links" ADD CONSTRAINT "Short_links_link_type_id_fkey" FOREIGN
 
 -- AddForeignKey
 ALTER TABLE "Temporal_short_links" ADD CONSTRAINT "Temporal_short_links_link_type_id_fkey" FOREIGN KEY ("link_type_id") REFERENCES "Link_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Temporal_short_links" ADD CONSTRAINT "Temporal_short_links_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
