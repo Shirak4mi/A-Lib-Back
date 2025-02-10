@@ -1,6 +1,7 @@
 import RecoverPassword from "./methods/RecoverPassword";
 import ForgotPassword from "./methods/ForgotPassword";
 import ValidateEmail from "./methods/VerifyEmail";
+import MagickLink from "./methods/MagikLinkLogin";
 import Register from "./methods/Register";
 import LogOut from "./methods/Logout";
 import Login from "./methods/Login";
@@ -13,5 +14,6 @@ export default new Elysia({ prefix: "Auth", normalize: true, detail: { tags: ["A
   ValidateEmail,
   ForgotPassword,
   RecoverPassword,
+  MagickLink,
   LogOut,
 ]);
