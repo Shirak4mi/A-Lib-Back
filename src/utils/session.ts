@@ -1,4 +1,5 @@
 import { prisma } from "@/db";
+import { getWorkingTokenTime } from "./functions";
 
 export async function invalidateUserSessions(id: number): Promise<boolean> {
   try {
@@ -14,7 +15,7 @@ export async function createUserSessions(id: number) {
   try {
     const session = await prisma.session.create({
       data: {
-        expires_at: Math.floor(new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).getTime() / 1000),
+        expires_at: getWorkingTokenTime(),
         User: { connect: { id } },
       },
     });
