@@ -8,7 +8,7 @@ import { Elysia } from "elysia";
 
 export default new Elysia().post(
   "Login",
-  async ({ body: { email, password }, cookie, set }) => {
+  async ({ body: { email, password, remember_me }, cookie, set }) => {
     try {
       const user = await prisma.user.findFirst({
         where: { email },
@@ -40,7 +40,7 @@ export default new Elysia().post(
       if (!cleanSessions) return;
 
       // New Session Creating
-      const session = await createUserSessions(id);
+      const session = await createUserSessions(id, remember_me);
       if (!session) return;
 
       // New Cookie Creation
@@ -48,6 +48,7 @@ export default new Elysia().post(
         secure: Bun.env.NODE_ENV !== "production",
         maxAge: session.expires_at,
         value: session.id,
+        priority: "high",
         sameSite: "lax",
         httpOnly: true,
         path: "/",
@@ -57,7 +58,7 @@ export default new Elysia().post(
       set.status = 201;
 
       // Response
-      return rest;
+      return { ...rest, remember_me };
     } catch (e) {
       throw e;
     }

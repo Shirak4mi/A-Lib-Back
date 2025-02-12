@@ -47,10 +47,9 @@ export default new Elysia().get(
             path: "/",
           });
 
-          console.log("Before redirect");
-
           // Set Response Status => 308 -> A new Session Was Created and the response is to move the user
-          return redirect("http://localhost:3000/en/Home", 302);
+          redirect("http://localhost:3001/en/Home", 302);
+          break;
         case 2:
           break;
         case 3:
