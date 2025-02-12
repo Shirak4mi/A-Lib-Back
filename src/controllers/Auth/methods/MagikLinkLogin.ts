@@ -29,9 +29,10 @@ export default new Elysia().post(
 
       if (!newLink) throw new BadRequestException("Could not create Magick Link");
 
+      console.log({ newLink });
+
       return newLink;
     } catch (e) {
-      console.log("error XD");
       throw new BadRequestException("Could not create Magick Link");
     }
   },
