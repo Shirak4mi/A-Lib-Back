@@ -13,12 +13,7 @@ export async function invalidateUserSessions(id: number): Promise<boolean> {
 
 export async function createUserSessions(id: number) {
   try {
-    const session = await prisma.session.create({
-      data: {
-        expires_at: getWorkingTokenTime(),
-        User: { connect: { id } },
-      },
-    });
+    const session = await prisma.session.create({ data: { expires_at: getWorkingTokenTime(), User: { connect: { id } } } });
     if (!session) return;
     return session;
   } catch (e) {

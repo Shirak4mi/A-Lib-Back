@@ -8,7 +8,7 @@ import { Elysia } from "elysia";
 
 export default new Elysia().post(
   "VerifyLink/:token",
-  async ({ params: { token: short_code }, cookie, set, redirect }) => {
+  async ({ params: { token: short_code }, cookie, redirect }) => {
     try {
       const isValidNano = await prisma.temporal_short_links.findFirst({
         where: { short_code },
@@ -45,10 +45,8 @@ export default new Elysia().post(
             path: "/",
           });
 
-          // Set Response Status => 201 -> A new Session Was Created
-          set.status = 201;
-
-          return redirect("http://localhost:3000/en/Home", 302);
+          // Set Response Status => 308 -> A new Session Was Created and the response is to move the user
+          return redirect("http://localhost:3000/en/Home", 308);
         case 2:
           break;
         case 3:

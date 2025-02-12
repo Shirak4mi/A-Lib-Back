@@ -10,6 +10,10 @@ export const useSuccessResponseMiddleware = (app: Elysia) => {
     const message = "success";
     const path = request.url;
     const data = response;
+    
+    console.log({ response });
+    
+    
     return {
       timeStamp,
       message,

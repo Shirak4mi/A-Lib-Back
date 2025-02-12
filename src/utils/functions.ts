@@ -55,10 +55,10 @@ export function getRandomHash(): string {
 export function isJsonString(str: string): boolean {
   try {
     JSON.parse(str);
+    return true;
   } catch (e) {
     return false;
   }
-  return true;
 }
 
 /**
@@ -114,6 +114,6 @@ export class SecureNanoID {
   }
 }
 
-export function getWorkingTokenTime(days: number = 30) {
+export function getWorkingTokenTime(days: number = 30): number {
   return Math.floor(new Date(Date.now() + 1000 * 60 * 60 * 24 * days).getTime() / 1000);
 }
