@@ -10,10 +10,12 @@ export const useSuccessResponseMiddleware = (app: Elysia) => {
     const message = "success";
     const path = request.url;
     const data = response;
-    
-    console.log({ response });
-    
-    
+    console.log(set.cookie);
+
+
+    const isRedirecting = (response as Response).headers.has("location");
+    if (isRedirecting) return response;
+
     return {
       timeStamp,
       message,

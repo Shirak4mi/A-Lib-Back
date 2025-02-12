@@ -6,7 +6,7 @@ import { prisma } from "@/db";
 
 import { Elysia } from "elysia";
 
-export default new Elysia().post(
+export default new Elysia().get(
   "VerifyLink/:token",
   async ({ params: { token: short_code }, cookie, redirect }) => {
     try {
@@ -20,19 +20,21 @@ export default new Elysia().post(
         },
       });
       if (!isValidNano) throw new BadRequestException("The Provided Token is not a valid One");
+
       // Sugar Destructuration for better accesibility => Type existance already validated
       const { expires_at, original_url, Type, User } = isValidNano;
 
-      // Check Expiration
-
       switch (Type.id) {
         case 1:
+          // User Object Destruct and Nully Validation
+          const { id, email } = User ?? { id: 0, email: "" };
+
           // Sessions Cleaning
-          const cleanSessions = await invalidateUserSessions(Type.id);
+          const cleanSessions = await invalidateUserSessions(id);
           if (!cleanSessions) return;
 
           // New Session Creating
-          const session = await createUserSessions(Type.id);
+          const session = await createUserSessions(id);
           if (!session) return;
 
           // New Cookie Creation
@@ -45,8 +47,10 @@ export default new Elysia().post(
             path: "/",
           });
 
+          console.log("Before redirect");
+
           // Set Response Status => 308 -> A new Session Was Created and the response is to move the user
-          return redirect("http://localhost:3000/en/Home", 308);
+          return redirect("http://localhost:3000/en/Home", 302);
         case 2:
           break;
         case 3:
