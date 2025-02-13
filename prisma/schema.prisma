@@ -8,43 +8,31 @@ datasource db {
 }
 
 model User {
-  id               Int                    @id @default(autoincrement()) @db.SmallInt
-  first_name       String                 @db.VarChar(255)
-  last_name        String                 @db.VarChar(255)
-  email            String                 @unique @db.VarChar(255)
-  verified_email   Boolean                @default(false) @db.Boolean
-  username         String                 @unique @db.VarChar(255)
-  password_salt    String                 @db.VarChar(255)
-  password         String                 @db.VarChar(255)
-  birth_date       DateTime               @db.Date
-  phone_number     String                 @db.VarChar(100)
-  address          String                 @db.Text
-  document_id      String                 @unique @db.VarChar(40)
-  is_bookable      Boolean                @default(false) @db.Boolean
-  user_pictures    Json?                  @db.JsonB
+  id                Int                 @id @default(autoincrement()) @db.SmallInt
+  first_name        String              @db.VarChar(255)
+  last_name         String              @db.VarChar(255)
+  email             String              @unique @db.VarChar(255)
+  verified_email    Boolean             @default(false) @db.Boolean
+  password_salt     String              @db.VarChar(255)
+  password          String              @db.VarChar(255)
+  document_id       String              @unique @db.VarChar(40)
   // Reg fields
-  document_type_id Int                    @db.SmallInt
-  status_id        Int                    @default(1) @db.SmallInt
-  user_type_id     Int                    @default(1) @db.SmallInt
-  created_at       DateTime               @default(now()) @db.Date
-  updated_at       DateTime?              @updatedAt @db.Date
+  document_type_id  Int                 @db.SmallInt
+  status_id         Int                 @default(1) @db.SmallInt
+  user_type_id      Int                 @default(1) @db.SmallInt
+  speaker_id        Int?                @db.SmallInt
+  created_at        DateTime            @default(now()) @db.Date
+  updated_at        DateTime?           @updatedAt @db.Date
   // Relations
-  Document_Type    Document_type          @relation(fields: [document_type_id], references: [id])
-  Status           User_status            @relation(fields: [status_id], references: [id])
-  User_Type        User_type              @relation(fields: [user_type_id], references: [id])
-  Sessions         Session[]
-  Booked_By        Booking[]              @relation("Booked_By")
-  Booked_From      Booking[]              @relation("Booked_From")
-  Schedule         Schedule[]
-  Feedback_From    Feedback[]             @relation("FeedbackFrom")
-  Feedback_To      Feedback[]             @relation("FeedbackTo")
-  Business         Business[]             @relation("Owner")
-  Expertise        Expertise[]
-  QueueEntry       QueueEntry[]
-  OAuthAccount     OAuthAccount[]
-  Tokens           TemporalTokens[]
-  Employees        Business_employees[]
-  TemporalLinks    Temporal_short_links[]
+  Document_Type     Document_type       @relation(fields: [document_type_id], references: [id])
+  Status            User_status         @relation(fields: [status_id], references: [id])
+  User_Type         User_type           @relation(fields: [user_type_id], references: [id])
+  Speaker_Profile   Speakers?           @relation(fields: [speaker_id], references: [id])
+  Sessions          Session[]
+  Tokens            TemporalTokens[]
+  Book_Reservations Book_Reservations[]
+  Trainings         Training_audience[]
+  Reservations      Room_reservations[]
 }
 
 model Session {
@@ -66,200 +54,209 @@ model TemporalTokens {
   Type         Token_type @relation(fields: [token_type], references: [id])
 }
 
-model OAuthAccount {
-  id                  Int           @id @default(autoincrement()) @db.Integer
-  provider_id         Int           @db.SmallInt
-  provider_account_id String
-  user_id             Int           @db.Integer
-  User                User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  Provider            Provider_type @relation(fields: [provider_id], references: [id])
-
-  @@unique([provider_id, provider_account_id])
+model Books {
+  id             Int                 @id @default(autoincrement()) @db.Integer
+  name           String              @db.VarChar(255)
+  year           DateTime            @db.Date
+  copies         Int                 @db.SmallInt
+  isbn           String              @unique @db.VarChar(30)
+  description    String              @db.Text
+  // Reg fields
+  author_id      Int                 @db.Integer
+  book_status_id Int                 @db.SmallInt
+  editorial_id   Int                 @db.Integer
+  languague_id   Int                 @db.SmallInt
+  create_time    DateTime            @default(now()) @db.Date
+  update_time    DateTime            @updatedAt @db.Date
+  // Relations
+  Author         Authors             @relation(fields: [author_id], references: [id])
+  Status         Book_status         @relation(fields: [book_status_id], references: [id])
+  Languague      Languagues          @relation(fields: [languague_id], references: [id])
+  Editorials     Editorials          @relation(fields: [editorial_id], references: [id])
+  Genres         Book_genres[]
+  Reservations   Book_Reservations[]
 }
 
-model Service {
-  id          Int                 @id @default(autoincrement()) @db.SmallInt
-  name        String              @db.VarChar(255)
-  description String?             @db.Text
-  base_price  Decimal             @db.Money
-  created_at  DateTime            @default(now()) @db.Date
-  updated_at  DateTime?           @updatedAt @db.Date
-  Bookings    Booking[]
-  Business    Business_Services[]
+model EBooks {
+  id              Int            @id @default(autoincrement()) @db.Integer
+  name            String         @db.VarChar(255)
+  year            DateTime       @db.Date
+  description     String         @db.Text
+  total_downloads Int            @db.Integer
+  file_src        String         @db.Text
+  // Reg fields
+  author_id       Int            @db.Integer
+  editorial_id    Int            @db.Integer
+  languague_id    Int            @db.SmallInt
+  create_time     DateTime       @default(now()) @db.Date
+  update_time     DateTime       @updatedAt @db.Date
+  // Relations
+  Author          Authors        @relation(fields: [author_id], references: [id])
+  Languague       Languagues     @relation(fields: [languague_id], references: [id])
+  Editorial       Editorials     @relation(fields: [editorial_id], references: [id])
+  Genres          EBook_genres[]
 }
 
-model Schedule {
-  id           Int       @id @default(autoincrement()) @db.SmallInt
-  date         DateTime  @db.Date
-  start_time   DateTime  @db.Date
-  end_time     DateTime  @db.Date
-  is_available Boolean   @default(false) @db.Boolean
-  user_id      Int       @db.SmallInt
-  created_at   DateTime  @default(now()) @db.Date
-  updated_at   DateTime? @updatedAt @db.Date
-  User         User      @relation(fields: [user_id], references: [id])
-}
-
-model Booking {
+model Genre {
   id          Int            @id @default(autoincrement()) @db.SmallInt
-  date        DateTime       @db.Date
-  start_time  DateTime       @db.Time
-  end_time    DateTime       @db.Time
-  // Reg Fields
-  user_id     Int            @db.SmallInt // The user who makes the booking
-  bookable_id Int            @db.SmallInt // The user who is being booked  
-  service_id  Int            @db.SmallInt
-  status_id   Int            @db.SmallInt
-  business_id Int            @db.SmallInt
-  created_at  DateTime       @default(now()) @db.Date
-  updated_at  DateTime?      @updatedAt @db.Date
-  // Relations
-  Booked_By   User           @relation("Booked_By", fields: [user_id], references: [id])
-  Booked_From User           @relation("Booked_From", fields: [bookable_id], references: [id])
-  Status      Booking_Status @relation(fields: [status_id], references: [id])
-  Service     Service        @relation(fields: [service_id], references: [id])
-  Business    Business       @relation(fields: [business_id], references: [id])
-}
-
-model Queue {
-  id           Int          @id @default(autoincrement()) @db.SmallInt
-  open_from    DateTime     @db.Time
-  open_to      DateTime     @db.Time
-  // Reg Fields
-  business_id  Int          @db.SmallInt
-  status_id    Int          @db.SmallInt
-  created_at   DateTime     @default(now()) @db.Date
-  updated_at   DateTime?    @updatedAt @db.Date
-  // Relations
-  Business     Business     @relation(fields: [business_id], references: [id])
-  QueueEntries QueueEntry[]
-}
-
-model QueueEntry {
-  id         Int       @id @default(autoincrement()) @db.SmallInt
-  position   Int       @db.SmallInt
-  // Reg Fields
-  queue_id   Int       @db.SmallInt
-  user_id    Int       @db.SmallInt
-  created_at DateTime  @default(now()) @db.Date
-  updated_at DateTime? @updatedAt @db.Date
-  // Relations
-  Queue      Queue     @relation(fields: [queue_id], references: [id])
-  User       User      @relation(fields: [user_id], references: [id])
-}
-
-model Expertise {
-  id         Int       @id @default(autoincrement()) @db.SmallInt
-  name       String    @db.VarChar(255)
-  user_id    Int       @db.SmallInt
-  created_at DateTime  @default(now()) @db.Date
-  updated_at DateTime? @updatedAt @db.Date
-  User       User      @relation(fields: [user_id], references: [id])
-}
-
-model Business {
-  id                Int                  @id @default(autoincrement()) @db.SmallInt
-  name              String               @db.VarChar(255)
-  description       String?              @db.Text
-  address           String               @db.Text
-  phone_number      String               @unique @db.VarChar(100)
-  email             String               @unique @db.VarChar(255)
-  open_from         DateTime             @db.Time
-  open_to           DateTime             @db.Time
-  pictures          Json?                @db.JsonB
+  name        String         @db.VarChar(255)
   // Reg fields
-  owner_id          Int                  @db.SmallInt
-  bussiness_type_id Int                  @db.SmallInt
-  created_at        DateTime             @default(now()) @db.Date
-  updated_at        DateTime?            @updatedAt @db.Date
+  create_time DateTime       @default(now()) @db.Date
+  update_time DateTime       @updatedAt @db.Date
   // Relations
-  Bussiness_Type    Business_type        @relation(fields: [bussiness_type_id], references: [id])
-  Owner             User                 @relation("Owner", fields: [owner_id], references: [id])
-  Queue             Queue[]
-  Bookings          Booking[]
-  Employees         Business_employees[]
-  Services          Business_Services[]
+  Books       Book_genres[]
+  EBooks      EBook_genres[]
 }
 
-model Business_employees {
-  id          Int       @id @default(autoincrement()) @db.Integer
-  business_id Int       @db.Integer
-  employee_id Int       @db.Integer
-  created_at  DateTime  @default(now()) @db.Date
-  updated_at  DateTime? @updatedAt @db.Date
-  Business    Business  @relation(fields: [business_id], references: [id])
-  Employee    User      @relation(fields: [employee_id], references: [id])
+model Book_genres {
+  book_id  Int   @db.Integer
+  genre_id Int   @db.SmallInt
+  Book     Books @relation(fields: [book_id], references: [id], onDelete: Cascade)
+  Genre    Genre @relation(fields: [genre_id], references: [id], onDelete: Cascade)
+
+  @@id([book_id, genre_id]) // Composite primary key
 }
 
-model Business_Services {
+model EBook_genres {
+  ebook_id Int    @db.Integer
+  genre_id Int    @db.SmallInt
+  Book     EBooks @relation(fields: [ebook_id], references: [id], onDelete: Cascade)
+  Genre    Genre  @relation(fields: [genre_id], references: [id], onDelete: Cascade)
+
+  @@id([ebook_id, genre_id]) // Composite primary key
+}
+
+model Authors {
   id          Int      @id @default(autoincrement()) @db.Integer
-  price       Decimal  @db.Money
-  business_id Int      @db.Integer
-  service_id  Int      @db.Integer
-  Business    Business @relation(fields: [business_id], references: [id])
-  Service     Service  @relation(fields: [service_id], references: [id])
-}
-
-model Feedback {
-  id           Int       @id @default(autoincrement()) @db.SmallInt
-  comment      String?   @db.Text
-  rating       Int       @db.Integer
-  user_id      Int       @db.SmallInt
-  from_user_id Int       @db.SmallInt
-  to_user_id   Int       @db.SmallInt
-  created_at   DateTime  @default(now()) @db.Date
-  updated_at   DateTime? @updatedAt @db.Date
-  From_user    User      @relation("FeedbackFrom", fields: [from_user_id], references: [id])
-  To_user      User      @relation("FeedbackTo", fields: [to_user_id], references: [id])
-}
-
-model Short_links {
-  id           String    @id @default(cuid()) @db.VarChar(70)
-  original_url String    @db.Text
-  short_code   String    @unique @db.VarChar(20)
-  clicks       Int       @default(0) @db.Integer
+  first_name  String   @db.VarChar(255)
+  last_name   String   @db.VarChar(255)
   // Reg fields
-  link_type_id Int       @db.SmallInt
-  created_at   DateTime  @default(now()) @db.Date
-  updated_at   DateTime  @updatedAt @db.Date
+  create_time DateTime @default(now()) @db.Date
+  update_time DateTime @updatedAt @db.Date
   // Relations
-  Type         Link_type @relation(fields: [link_type_id], references: [id])
-
-  @@index([short_code])
+  Books       Books[]
+  EBooks      EBooks[]
 }
 
-model Temporal_short_links {
-  id           String    @id @default(cuid()) @db.VarChar(70)
-  original_url String    @db.Text
-  short_code   String    @unique @db.VarChar(20)
+model Book_Reservations {
+  id          Int      @id @default(autoincrement()) @db.Integer
+  from        DateTime @db.Date
+  return_date DateTime @db.Date
   // Reg fields
-  user_id      Int?      @db.SmallInt
-  link_type_id Int       @db.SmallInt
-  expires_at   Int       @db.Integer
-  created_at   DateTime  @default(now()) @db.Date
-  // Relations
-  Type         Link_type @relation(fields: [link_type_id], references: [id])
-  User         User?     @relation(fields: [user_id], references: [id])
+  book_id     Int      @db.Integer
+  user_id     Int      @db.SmallInt
+  create_time DateTime @default(now()) @db.Date
+  update_time DateTime @updatedAt @db.Date
+  // Relations  
+  Book        Books    @relation(fields: [book_id], references: [id])
+  User        User     @relation(fields: [user_id], references: [id])
+}
 
-  @@index([short_code])
+model Editorials {
+  id          Int      @id @default(autoincrement()) @db.Integer
+  name        String   @db.VarChar(255)
+  // Reg fields
+  create_time DateTime @default(now()) @db.Date
+  update_time DateTime @updatedAt @db.Date
+  // Relations  
+  Book        Books[]
+  EBooks      EBooks[]
+}
+
+model Languagues {
+  id          Int      @id @default(autoincrement()) @db.Integer
+  name        String   @db.VarChar(255)
+  // Reg fields
+  create_time DateTime @default(now()) @db.Date
+  update_time DateTime @updatedAt @db.Date
+  // Relations  
+  Book        Books[]
+  EBooks      EBooks[]
+}
+
+model Trainings {
+  id            Int                 @id @default(autoincrement()) @db.Integer
+  name          String              @db.VarChar(255)
+  // Reg fields
+  speaker_id    Int                 @db.Integer
+  study_room_id Int                 @db.Integer
+  create_time   DateTime            @default(now()) @db.Date
+  update_time   DateTime            @updatedAt @db.Date
+  // Relations
+  Room          Study_room          @relation(fields: [study_room_id], references: [id])
+  Speakers      Speakers_training[]
+  Audience      Training_audience[]
+}
+
+model Speakers {
+  id          Int                 @id @default(autoincrement()) @db.Integer
+  first_name  String              @db.VarChar(255)
+  last_name   String              @db.VarChar(255)
+  // Reg fields
+  create_time DateTime            @default(now()) @db.Date
+  update_time DateTime            @updatedAt @db.Date
+  // Relations  
+  Trainings   Speakers_training[]
+  User_Data   User[]
+}
+
+model Study_room {
+  id                    Int                 @id @default(autoincrement()) @db.Integer
+  name                  String              @db.VarChar(255)
+  max_personel_per_room Int                 @default(1) @db.Integer
+  // Reg fields
+  status_id             Int                 @db.SmallInt
+  create_time           DateTime            @default(now()) @db.Date
+  update_time           DateTime            @updatedAt @db.Date
+  // Relations  
+  Status                Study_room_status   @relation(fields: [status_id], references: [id])
+  Trainings             Trainings[]
+  Reservations          Room_reservations[]
+}
+
+model Room_reservations {
+  id               Int        @id @default(autoincrement()) @db.Integer
+  personal         Int        @db.SmallInt
+  motive           String     @db.Text
+  reservation_date DateTime   @db.Date
+  start_hours      DateTime   @db.Time()
+  end_hours        DateTime   @db.Time()
+  // Reg fields
+  room_id          Int        @db.SmallInt
+  user_id          Int        @db.Integer
+  create_time      DateTime   @default(now()) @db.Date
+  update_time      DateTime   @updatedAt @db.Date
+  // Relations  
+  Room             Study_room @relation(fields: [room_id], references: [id])
+  Responsible      User       @relation(fields: [user_id], references: [id])
+}
+
+model Speakers_training {
+  speaker_id  Int       @db.Integer
+  training_id Int       @db.SmallInt
+  Speakers    Speakers  @relation(fields: [speaker_id], references: [id], onDelete: Cascade)
+  Trainings   Trainings @relation(fields: [training_id], references: [id], onDelete: Cascade)
+
+  @@id([speaker_id, training_id]) // Composite primary key
+}
+
+model Training_audience {
+  training_id Int
+  user_id     Int
+  Users       User      @relation(fields: [user_id], references: [id])
+  Trainings   Trainings @relation(fields: [training_id], references: [id])
+
+  @@id([training_id, user_id]) // Composite primary key
 }
 
 // Type models -> Regulatory models
 
 model Token_type {
-  id             Int              @id @default(autoincrement()) @db.Integer
+  id             Int              @id @default(autoincrement()) @db.SmallInt
   name           String           @db.VarChar(255)
   create_time    DateTime         @default(now()) @db.Date
   update_time    DateTime         @updatedAt @db.Date
   TemporalTokens TemporalTokens[]
-}
-
-model Provider_type {
-  id           Int            @id @default(autoincrement()) @db.Integer
-  name         String         @db.VarChar(255)
-  create_time  DateTime       @default(now()) @db.Date
-  update_time  DateTime       @updatedAt @db.Date
-  OAuthAccount OAuthAccount[]
 }
 
 model Document_type {
@@ -278,35 +275,26 @@ model User_status {
   User       User[]
 }
 
+model Book_status {
+  id         Int      @id @default(autoincrement()) @db.SmallInt
+  name       String   @db.VarChar(60)
+  created_at DateTime @default(now()) @db.Date
+  updated_at DateTime @updatedAt @db.Date
+  Books      Books[]
+}
+
+model Study_room_status {
+  id         Int          @id @default(autoincrement()) @db.SmallInt
+  name       String       @db.VarChar(60)
+  created_at DateTime     @default(now()) @db.Date
+  updated_at DateTime     @updatedAt @db.Date
+  Study_room Study_room[]
+}
+
 model User_type {
   id         Int      @id @default(autoincrement()) @db.SmallInt
   name       String   @db.VarChar(60)
   created_at DateTime @default(now()) @db.Date
   updated_at DateTime @updatedAt @db.Date
   User       User[]
-}
-
-model Booking_Status {
-  id         Int       @id @default(autoincrement()) @db.SmallInt
-  name       String    @db.VarChar(255)
-  created_at DateTime  @default(now()) @db.Date
-  updated_at DateTime? @updatedAt @db.Date
-  Booking    Booking[]
-}
-
-model Business_type {
-  id         Int        @id @default(autoincrement()) @db.SmallInt
-  name       String     @db.VarChar(60)
-  created_at DateTime   @default(now()) @db.Date
-  updated_at DateTime   @updatedAt @db.Date
-  Business   Business[]
-}
-
-model Link_type {
-  id             Int                    @id @default(autoincrement()) @db.SmallInt
-  name           String                 @db.VarChar(60)
-  created_at     DateTime               @default(now()) @db.Date
-  updated_at     DateTime               @updatedAt @db.Date
-  Links          Short_links[]
-  Temporal_Links Temporal_short_links[]
 }
