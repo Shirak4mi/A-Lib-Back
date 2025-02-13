@@ -14,7 +14,7 @@ export default new Elysia().patch(
     try {
       const id = cookie[session_cookie_name].value;
       const isValidSession = await prisma.session.findFirst({
-        select: { User: { select: { id: true, username: true } } },
+        select: { User: { select: { id: true } } },
         where: { id },
       });
 
@@ -25,20 +25,17 @@ export default new Elysia().patch(
       const { birth_date, document_type_id, password } = body;
 
       // Constants
-      const username = body.email ? body.email.split("@")[0] : User.username;
       const password_salt = generateRandomSalt();
 
-      const isFileSaved = await updateUserProfilePicture(username, User.username, body.profile_picture);
+      // const isFileSaved = await updateUserProfilePicture(username, User.username, body.profile_picture);
 
       const uptd_user = await prisma.user.update({
         where: { id: User.id },
         data: {
           ...(password && { password: await Bun.password.hash(password_salt + password, { algorithm: "argon2d" }) }),
           ...(document_type_id && { Document_Type: { connect: { id: parseInt(document_type_id.toString()) } } }),
-          ...(birth_date && { birth_date: commonBDR(birth_date ?? "01/01/1777") }),
-          user_pictures: isFileSaved ? JSON.stringify(isFileSaved) : undefined,
+          // user_pictures: isFileSaved ? JSON.stringify(isFileSaved) : undefined,
           ...(password ? { password_salt } : { password_salt: undefined }),
-          phone_number: body.phone_number,
           Status: { connect: { id: 2 } },
           document_id: body.document_id,
           first_name: body.first_name,

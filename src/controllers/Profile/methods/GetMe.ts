@@ -17,13 +17,8 @@ export default new Elysia().get(
             select: {
               first_name: true,
               last_name: true,
-              username: true,
               email: true,
-              address: true,
-              birth_date: true,
               document_id: true,
-              phone_number: true,
-              user_pictures: true,
               verified_email: true,
               Status: { select: { name: true } },
               User_Type: { select: { name: true } },
