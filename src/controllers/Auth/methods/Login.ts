@@ -18,7 +18,6 @@ export default new Elysia().post(
           password_salt: true,
           first_name: true,
           last_name: true,
-          username: true,
           password: true,
           email: true,
           id: true,

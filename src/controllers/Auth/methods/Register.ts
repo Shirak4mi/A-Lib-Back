@@ -28,30 +28,23 @@ export default new Elysia().post(
       const expires_at = generateDate(2, "h");
       const hashed_token = generateToken();
 
-      const isFileSaved = await saveUserProfilePicture(username, body.profile_picture);
+      // const isFileSaved = await saveUserProfilePicture(username, body.profile_picture);
 
       const nUser = await prisma.user.create({
         data: {
           password: await Bun.password.hash(password_salt + body.password, { algorithm: "argon2d" }),
           Tokens: { create: { Type: { connect: { id: 1 } }, hashed_token, expires_at } },
-          user_pictures: isFileSaved ? JSON.stringify(isFileSaved) : undefined,
           Document_Type: { connect: { id: parseInt(body.document_type_id) } },
           User_Type: { connect: { id: parseInt(body.account_type_id) } },
-          birth_date: commonBDR(body.birth_date ?? "01/01/1777"),
-          phone_number: body.phone_number,
           Status: { connect: { id: 1 } },
           document_id: body.document_id,
-          is_bookable: body.is_bookable,
           first_name: body.first_name,
           last_name: body.last_name,
-          address: body.address,
           email: body.email,
           password_salt,
-          username,
         },
         select: {
           verified_email: true,
-          username: true,
           email: true,
         },
       });
