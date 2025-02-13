@@ -17,11 +17,6 @@ async function main() {
       skipDuplicates: true,
     });
 
-    const booking_status = await prisma.booking_Status.createMany({
-      data: [{ name: "Pending" }, { name: "Confirmed" }, { name: "Completed" }, { name: "Cancelled" }],
-      skipDuplicates: true,
-    });
-
     const documet_types = await prisma.document_type.createMany({
       data: [
         { name: "Dominican Id (Cédula)" },
@@ -38,37 +33,28 @@ async function main() {
       skipDuplicates: true,
     });
 
-    const provider_types = await prisma.provider_type.createMany({
-      data: [{ name: "Google" }, { name: "Facebook" }],
-      skipDuplicates: true,
-    });
-
     const user_types = await prisma.user_type.createMany({
-      data: [{ name: "Customer" }, { name: "Owner" }, { name: "Employee" }],
+      data: [{ name: "Student" }, { name: "Speaker" }, { name: "Admin" }],
       skipDuplicates: true,
     });
 
-    const business_type = await prisma.business_type.createMany({
-      data: [{ name: "Barbershop" }],
+    const book_status = await prisma.book_status.createMany({
+      data: [{ name: "Avalibable" }, { name: "Out of Stock" }, { name: "Booked" }],
       skipDuplicates: true,
     });
 
-    const services = await prisma.service.create({ data: { name: "Service Test", base_price: 750.7 } });
-
-    const link_types = await prisma.link_type.createMany({
-      data: [{ name: "Login" }, { name: "Share" }, { name: "Redirect" }],
+    const study_room_status = await prisma.study_room_status.createMany({
+      data: [{ name: "Avalibable" }, { name: "Booked" }, { name: "Out of Service" }],
+      skipDuplicates: true,
     });
 
     console.log({
+      study_room_status,
       documet_types,
+      book_status,
       user_status,
-      booking_status,
       token_types,
-      provider_types,
       user_types,
-      business_type,
-      services,
-      link_types,
     });
   } catch (e) {
     console.error(e);
